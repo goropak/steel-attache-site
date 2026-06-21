@@ -1,0 +1,121 @@
+/* ============================================================
+   철강 주재원 — Static publication theme
+   편집 매체 그레이드: 스틸 톤 + 용광로 액센트
+   외부 자산 0 (CSS/SVG only)
+   ============================================================ */
+:root{
+  --paper:#f7f5ef;        /* 따뜻한 종이 */
+  --paper-2:#fffdf8;
+  --ink:#191a1c;          /* 본문 */
+  --ink-soft:#54504a;
+  --muted:#857f74;
+  --hair:#e4ddcd;
+  --steel:#1f2733;        /* 마스트헤드(강철 차콜) */
+  --steel-2:#2c3a4b;
+  --blue:#2a4a72;         /* 스틸 블루 액센트 */
+  --rust:#b1471f;         /* 용광로 러스트 액센트 */
+  --quote:#403a30;
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:-apple-system,"Apple SD Gothic Neo","Pretendard","Segoe UI",Roboto,sans-serif;
+  font-size:18px;line-height:1.8;-webkit-font-smoothing:antialiased;letter-spacing:-0.003em;
+}
+.serif{font-family:"Iowan Old Style",Georgia,"Apple Garamond","AppleMyungjo",serif;}
+a{color:var(--blue);text-decoration:none;}
+a:hover{text-decoration:underline;}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+.col{max-width:680px;margin:0 auto;padding:0 28px;}
+.mono{font-family:"SF Mono",ui-monospace,Menlo,monospace;}
+
+/* ---------- 마스트헤드 ---------- */
+.masthead{background:var(--steel);color:#eef1f4;border-bottom:3px solid var(--rust);}
+.masthead .wrap{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;flex-wrap:wrap;gap:10px;}
+.mh-brand{display:flex;align-items:center;gap:14px;}
+.mh-mark{width:34px;height:34px;flex:0 0 34px;}
+.mh-title a{color:#fff;font-weight:800;font-size:1.35rem;letter-spacing:-0.01em;line-height:1.05;}
+.mh-title .sub{display:block;color:#aab6c4;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;margin-top:3px;font-weight:600;}
+.mh-nav a{color:#cdd6df;font-size:.92rem;margin-left:20px;letter-spacing:.02em;}
+.mh-nav a:hover{color:#fff;text-decoration:none;}
+
+/* ---------- 히어로 ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--hair);background:
+   radial-gradient(120% 90% at 85% 0%, rgba(42,74,114,.06), transparent 60%),
+   linear-gradient(180deg,#fbf9f3,var(--paper));}
+.hero .wrap{position:relative;padding:72px 28px 56px;}
+.hero .eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rust);font-weight:800;}
+.hero h1{font-size:clamp(2.1rem,5vw,3.1rem);line-height:1.12;letter-spacing:-0.015em;margin:14px 0 16px;max-width:14ch;}
+.hero p{font-size:1.12rem;color:var(--ink-soft);max-width:52ch;margin:0;line-height:1.7;}
+.hero .motif{position:absolute;right:-20px;bottom:-10px;width:min(44%,420px);opacity:.5;pointer-events:none;}
+@media(max-width:720px){.hero .motif{display:none;}}
+
+/* ---------- 카테고리 칩 ---------- */
+.chip{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:999px;border:1px solid;}
+.chip.forest{color:#3c6b2e;border-color:#bcd3b0;background:#eef4e9;}
+.chip.tree{color:#8a5a16;border-color:#e3cf9f;background:#f6eed9;}
+.chip.brief{color:var(--blue);border-color:#bcccdf;background:#e7eef6;}
+
+/* ---------- 섹션 헤더 ---------- */
+.sec{padding:46px 0 8px;}
+.sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:4px;}
+.sec-h h2{font-size:1.15rem;letter-spacing:.04em;margin:0;font-weight:800;}
+.sec-h .more{margin-left:auto;font-size:.8rem;color:var(--muted);}
+
+/* ---------- 피처드 + 목록 ---------- */
+.feature{display:block;color:var(--ink);background:var(--paper-2);border:1px solid var(--hair);border-radius:16px;
+  padding:30px 30px 28px;margin:24px 0 12px;box-shadow:0 18px 40px -34px rgba(20,30,45,.5);transition:transform .15s,box-shadow .15s;}
+.feature:hover{transform:translateY(-2px);box-shadow:0 22px 46px -30px rgba(20,30,45,.55);text-decoration:none;}
+.feature .d{font-size:.78rem;color:var(--muted);letter-spacing:.03em;margin:12px 0 8px;}
+.feature h3{font-size:1.85rem;line-height:1.22;letter-spacing:-0.01em;margin:0 0 10px;}
+.feature p{font-size:1.02rem;color:var(--ink-soft);margin:0;line-height:1.65;}
+
+.list{margin:6px 0 0;}
+.list a.post{display:flex;gap:18px;color:var(--ink);padding:24px 2px;border-bottom:1px solid var(--hair);align-items:flex-start;}
+.list a.post:hover{text-decoration:none;}
+.list a.post:hover .t{color:var(--blue);}
+.list .num{font-size:.85rem;color:var(--muted);font-weight:700;padding-top:4px;width:30px;flex:0 0 30px;}
+.list .body{flex:1;}
+.list .d{font-size:.76rem;color:var(--muted);letter-spacing:.03em;margin:10px 0 6px;}
+.list .t{font-size:1.4rem;font-weight:700;line-height:1.3;letter-spacing:-0.01em;transition:color .12s;}
+.list .x{font-size:.98rem;color:var(--ink-soft);line-height:1.65;margin-top:6px;}
+
+/* ---------- 소개 스트립 ---------- */
+.about{margin:54px 0 0;background:var(--steel);color:#e9edf1;border-radius:16px;padding:34px 32px;}
+.about h4{margin:0 0 8px;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);}
+.about p{margin:0;color:#c7d0da;font-size:.98rem;line-height:1.75;max-width:60ch;}
+.about .pills{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;}
+.about .pill{font-size:.74rem;color:#cdd6df;border:1px solid #3a4654;border-radius:999px;padding:4px 11px;}
+
+/* ---------- 글 본문 (reading) ---------- */
+article{padding:44px 0 8px;}
+article .back{display:inline-block;margin-bottom:18px;font-size:.88rem;color:var(--muted);}
+article .eyebrow{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);font-weight:800;}
+article h1{font-size:clamp(1.9rem,4.5vw,2.5rem);line-height:1.2;letter-spacing:-0.015em;margin:12px 0 8px;}
+article .deck{font-size:1.2rem;color:var(--muted);margin:0 0 16px;line-height:1.5;}
+article .byline{font-size:.85rem;color:var(--muted);border-bottom:1px solid var(--hair);padding-bottom:18px;margin-bottom:30px;}
+article .lead{font-size:1.06rem;line-height:1.8;color:#2c2a25;border-left:3px solid var(--blue);padding:2px 0 2px 20px;margin:0 0 36px;}
+article .lead p{margin:0 0 10px;} article .lead p:last-child{margin:0;}
+article h2{font-size:1.55rem;line-height:1.32;letter-spacing:-0.01em;margin:48px 0 12px;}
+article h3{font-size:1.08rem;margin:28px 0 6px;color:#2e2b25;}
+article p{margin:0 0 20px;}
+article blockquote{margin:28px 0;padding:2px 0 2px 22px;border-left:3px solid var(--hair);font-style:italic;font-size:1.12rem;color:var(--quote);line-height:1.6;}
+article blockquote p{margin:0;}
+article ul,article ol{padding-left:22px;} article li{margin:9px 0;}
+article table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.95rem;}
+article th,article td{border:1px solid var(--hair);padding:9px 11px;text-align:left;} article th{background:#efe9da;}
+article sup{font-size:.66em;color:var(--blue);font-weight:600;}
+article hr{border:none;height:1px;background:var(--hair);margin:42px 0;}
+.notes{font-size:.86rem;color:var(--muted);line-height:1.7;border-top:1px solid var(--hair);padding-top:24px;margin-top:42px;}
+.notes h4{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#8a8174;margin:0 0 12px;}
+.notes ol{padding-left:20px;} .notes li{margin:6px 0;}
+.notes .meta{color:#9a9284;font-style:italic;margin-top:14px;}
+.correction{background:#fbf2ec;border:1px dashed #d79a7c;border-radius:10px;padding:12px 16px;font-size:.95rem;color:#6b3b28;margin:18px 0;}
+
+/* ---------- 푸터 ---------- */
+.foot{background:var(--steel);color:#aeb8c2;border-top:3px solid var(--rust);margin-top:64px;}
+.foot .wrap{padding:40px 28px;text-align:center;}
+.foot .b{color:#fff;font-weight:800;font-size:1.05rem;}
+.foot .s{font-size:.8rem;color:#7e8a96;margin-top:8px;}
