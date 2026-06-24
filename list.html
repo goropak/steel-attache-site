@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>철강 주재원 — 포스코의 눈으로 읽는 세계 철강</title>
-<meta name="description" content="해외 철강사와 제철소의 조업·설비·전략을 1차 자료로 추적합니다. 숲을 보고 나무를 본다.">
+<title id="page-title">글 목록 — 철강 주재원</title>
+<meta name="description" content="철강 주재원 전체 글 목록. 카테고리별 필터.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -35,7 +35,7 @@
     </div>
 
     <nav class="mh-nav" aria-label="보조 내비게이션">
-      <a href="#about">소개</a>
+      <a href="index.html">홈</a>
     </nav>
   </div>
 </header>
@@ -43,7 +43,7 @@
 <!-- GNB -->
 <nav class="gnb" aria-label="카테고리 내비게이션">
   <div class="wrap">
-    <a href="list.html" class="gnb-item">전체</a>
+    <a href="list.html" class="gnb-item active">전체</a>
     <a href="list.html?cat=숲" class="gnb-item">숲</a>
     <a href="list.html?cat=일본" class="gnb-item">일본</a>
     <a href="list.html?cat=중국" class="gnb-item soon" aria-label="중국 (예정)">중국</a>
@@ -55,45 +55,12 @@
   </div>
 </nav>
 
-<!-- 메인 -->
-<main class="wrap portal-main">
-
-  <!-- 피처드 그리드 -->
-  <section class="sec" id="featured" aria-labelledby="featured-heading">
-    <div class="sec-h">
-      <h2 id="featured-heading">오늘의 정보</h2>
-      <span class="more">최신 분석 · 브리핑</span>
-    </div>
-    <div class="portal-featured">
-      <div id="feat-left" class="feat-side" aria-label="관련 기사 목록"></div>
-      <div id="feat-hero" aria-label="주요 기사"></div>
-      <div id="feat-right" class="feat-side" aria-label="관련 기사 목록"></div>
-    </div>
-  </section>
-
-  <!-- 전체 글 -->
-  <section class="sec" id="archive" aria-labelledby="archive-heading">
-    <div class="sec-h">
-      <h2 id="archive-heading">전체 글</h2>
-      <span class="more">숲을 보고 나무를 본다</span>
-    </div>
-    <div id="latest-grid" class="latest-grid"></div>
-  </section>
-
-  <!-- 소개 -->
-  <section class="about" id="about" aria-labelledby="about-heading">
-    <h4 id="about-heading">이 사이트에 대하여</h4>
-    <p>포스코에서 20년간 제철소 조업과 설비투자를 다룬 시선으로, 일본·중국·미국·유럽·인도의 철강사와 제철소를 1차 자료 기반으로 추적합니다. 현장 엔지니어의 눈과 투자가의 눈으로 — 추측은 배제하고, 모든 주장에 출처를 답니다.</p>
-    <div class="pills">
-      <span class="pill">일본</span>
-      <span class="pill">중국</span>
-      <span class="pill">미국</span>
-      <span class="pill">유럽</span>
-      <span class="pill">인도</span>
-      <span class="pill">포스코·현대제철</span>
-    </div>
-  </section>
-
+<main class="wrap">
+  <div class="list-header">
+    <h2 id="list-title" class="serif">전체 글</h2>
+    <p><span id="list-count"></span></p>
+  </div>
+  <div id="post-list" role="list" aria-label="글 목록"></div>
 </main>
 
 <footer class="foot">
@@ -104,6 +71,21 @@
 </footer>
 
 <script src="js/search.js"></script>
-<script src="js/home.js"></script>
+<script src="js/list.js"></script>
+<script>
+  (function () {
+    var params = new URLSearchParams(location.search);
+    var cat = params.get('cat');
+    if (cat) {
+      document.title = cat + ' — 철강 주재원';
+      var activeLinks = document.querySelectorAll('.gnb-item');
+      activeLinks.forEach(function (a) {
+        a.classList.remove('active');
+        var href = a.getAttribute('href');
+        if (href === 'list.html?cat=' + encodeURIComponent(cat)) a.classList.add('active');
+      });
+    }
+  })();
+</script>
 </body>
 </html>
