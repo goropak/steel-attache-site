@@ -15,14 +15,14 @@
     '철강': '#374151'
   };
 
-  function thumbHtml(p, isHero) {
+  function thumbHtml(p) {
     if (p.thumb) {
-      return '<div class="card-thumb"><img src="' + p.thumb + '" alt="' + p.title + '" loading="lazy"></div>';
+      return '<div class="card-thumb"><img src="' + p.thumb + '" alt="' + p.title +
+        '" loading="lazy" width="640" height="360"></div>';
     }
     var bg = CAT_COLORS[p.category] || '#4a5568';
-    var h = isHero ? '200px' : '120px';
-    return '<div class="card-thumb" style="height:' + h + ';background:linear-gradient(135deg,' +
-      bg + '18,' + bg + '36);display:flex;align-items:center;justify-content:center;overflow:hidden;">' +
+    return '<div class="card-thumb" style="background:linear-gradient(135deg,' +
+      bg + '18,' + bg + '36);display:flex;align-items:center;justify-content:center;">' +
       catSvg(p.category, bg) + '</div>';
   }
 
@@ -47,7 +47,7 @@
 
   function heroCard(p) {
     return '<a class="feat-hero-card is-hero" href="' + p.url + '">' +
-      thumbHtml(p, true) +
+      thumbHtml(p) +
       '<div class="card-body">' +
         '<div class="card-cat">' + p.category + '</div>' +
         '<h3>' + p.title + '</h3>' +

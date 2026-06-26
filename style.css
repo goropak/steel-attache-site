@@ -233,7 +233,18 @@ img { max-width: 100%; height: auto; display: block; }
   height: 100%;
 }
 .feat-hero-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.1); transform: translateY(-1px); text-decoration: none; }
-.card-thumb { overflow: hidden; }
+.card-thumb {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--c-surface);
+}
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .feat-hero-card .card-body { padding: var(--sp-4); }
 .feat-hero-card .card-cat {
   font-size: .72rem;
