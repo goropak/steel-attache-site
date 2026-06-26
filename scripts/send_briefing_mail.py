@@ -12,8 +12,8 @@ send_briefing_mail.py — 철강 주재원 브리핑 메일 발송
 """
 
 import json, os, re, smtplib, sys
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from email.message import EmailMessage
+from email import policy as email_policy
 from pathlib import Path
 from datetime import datetime
 from html.parser import HTMLParser
@@ -32,7 +32,7 @@ except ImportError:
     pass
 
 GMAIL_USER = os.environ.get("GMAIL_USER", "csband8@gmail.com")
-GMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD", "")
+GMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD", "").replace('\xa0', '').replace(' ', '')
 
 # ── HTML 파싱 — 본문 섹션 추출 ────────────────────────────────
 class BriefingParser(HTMLParser):
@@ -78,6 +78,10 @@ def parse_briefing(html_path):
     return {"h2s": p.h2s, "leads": p.leads, "blockquotes": p.blockquotes, "summary": desc}
 
 # ── 이메일 HTML 생성 ──────────────────────────────────────────
+def clean(s):
+    """비ASCII 공백 등 문제 문자 제거"""
+    return s.replace('\xa0', ' ').replace('​', '').strip()
+
 def build_html(post, content, recipient_name=""):
     title    = post.get("title","주간 브리핑")
     date     = post.get("date", datetime.today().strftime("%Y-%m-%d"))
@@ -88,7 +92,7 @@ def build_html(post, content, recipient_name=""):
     # 리드 문장 (최대 2개)
     leads_html = ""
     for l in content["leads"][:2]:
-        leads_html += f'<p style="margin:0 0 12px;font-size:15px;color:#2c2c2c;line-height:1.75;">{l}</p>'
+        leads_html += f'<p style="margin:0 0 12px;font-size:15px;color:#2c2c2c;line-height:1.75;">{clean(l)}</p>'
 
     # 섹션 카드 (h2 + blockquote 쌍)
     sections_html = ""
@@ -99,7 +103,7 @@ def build_html(post, content, recipient_name=""):
         # 한국 관점 강조
         bq_html = ""
         if bq:
-            bq_clean = re.sub(r'<[^>]+>', '', bq)
+            bq_clean = clean(re.sub(r'<[^>]+>', '', bq))
             bq_html = f"""
             <div style="border-left:3px solid #D62828;padding:10px 14px;background:#fff8f8;border-radius:0 6px 6px 0;margin-top:10px;">
               <p style="margin:0;font-size:13px;color:#4a4a4a;line-height:1.65;">{bq_clean}</p>
@@ -223,12 +227,16 @@ def send(post, content, subs, dry_run=False):
         html  = build_html(post, content, name)
         plain = f"{title}\n{SITE_URL}/{post.get('url','')}\n\n구독 해지: csband8@gmail.com"
 
-        msg = MIMEMultipart("alternative")
+        # \xa0 등 비ASCII 공백 전체 제거
+        html  = html.replace('\xa0', ' ')
+        plain = plain.replace('\xa0', ' ')
+
+        msg = EmailMessage(policy=email_policy.SMTP)
         msg["Subject"] = subject
-        msg["From"]    = f"철강 주재원 <{GMAIL_USER}>"
+        msg["From"]    = f"Steel Attache <{GMAIL_USER}>"
         msg["To"]      = email
-        msg.attach(MIMEText(plain, "plain", "utf-8"))
-        msg.attach(MIMEText(html,  "html",  "utf-8"))
+        msg.set_content(plain, charset="utf-8")
+        msg.add_alternative(html, subtype="html", charset="utf-8")
 
         if dry_run:
             print(f"[DRY] → {email}")
@@ -237,10 +245,12 @@ def send(post, content, subs, dry_run=False):
         try:
             with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
                 s.login(GMAIL_USER, GMAIL_PASS)
-                s.sendmail(GMAIL_USER, email, msg.as_string())
+                s.send_message(msg)
             print(f"[OK]  → {email}")
             ok += 1
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             print(f"[FAIL] {email}: {e}")
             fail += 1
 
