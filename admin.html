@@ -19,6 +19,7 @@ body{background:var(--c-bg,#f5f3ee);}
 .btn-ghost:hover{border-color:#999;}
 .btn-danger{background:#fee2e2;color:#991b1b;}
 .btn-danger:hover{background:#fca5a5;}
+.btn-green{background:#d1fae5;color:#065f46;}
 .sub-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.4rem;}
 .sub-item{display:flex;align-items:center;justify-content:space-between;padding:.5rem .75rem;background:var(--c-bg,#f5f3ee);border-radius:6px;font-size:.88rem;}
 .sub-item span{color:var(--c-muted,#6b6459);font-size:.78rem;margin-left:.5rem;}
@@ -27,6 +28,12 @@ body{background:var(--c-bg,#f5f3ee);}
 .stat-box{flex:1;background:var(--c-bg,#f5f3ee);border-radius:8px;padding:.75rem 1rem;text-align:center;}
 .stat-box .num{font-size:1.75rem;font-weight:800;color:var(--accent,#D62828);}
 .stat-box .lbl{font-size:.78rem;color:var(--c-muted,#6b6459);}
+.fs-bar{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-radius:8px;font-size:.88rem;margin-bottom:1rem;}
+.fs-bar.connected{background:#d1fae5;color:#065f46;}
+.fs-bar.disconnected{background:#f3f4f6;color:#6b7280;}
+.fs-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.fs-bar.connected .fs-dot{background:#10b981;}
+.fs-bar.disconnected .fs-dot{background:#9ca3af;}
 /* 비밀번호 게이트 */
 #gate{position:fixed;inset:0;background:var(--c-bg,#f5f3ee);display:flex;align-items:center;justify-content:center;z-index:999;}
 .gate-box{background:#fff;border:1px solid var(--c-border,#e6e0d4);border-radius:12px;padding:2rem;width:320px;text-align:center;}
@@ -58,6 +65,20 @@ body{background:var(--c-bg,#f5f3ee);}
 
 <div class="admin-wrap">
 
+  <!-- 폴더 연결 상태 -->
+  <div class="admin-section">
+    <h2>로컬 파일 연결</h2>
+    <div class="fs-bar disconnected" id="fs-bar">
+      <div class="fs-dot"></div>
+      <span id="fs-label">연결 안 됨 — 구독자가 브라우저에만 저장됩니다</span>
+    </div>
+    <div style="display:flex;gap:.5rem;align-items:center;">
+      <button class="btn btn-primary" onclick="connectFolder()">📁 site/data 폴더 연결</button>
+      <span style="font-size:.82rem;color:var(--c-muted,#6b6459);">연결하면 추가/삭제 시 자동으로 파일에 저장됩니다</span>
+    </div>
+  </div>
+
+  <!-- 구독자 관리 -->
   <div class="admin-section">
     <div class="stats">
       <div class="stat-box"><div class="num" id="stat-total">0</div><div class="lbl">구독자</div></div>
@@ -75,17 +96,7 @@ body{background:var(--c-bg,#f5f3ee);}
     <ul class="sub-list" id="sub-list"><li class="empty-note">구독자가 없습니다.</li></ul>
   </div>
 
-  <div class="admin-section">
-    <h2>subscribers.json 내보내기</h2>
-    <p style="font-size:.88rem;color:var(--c-muted,#6b6459);margin:0 0 .75rem">다운로드 후 <code>site/data/subscribers.json</code>으로 저장하세요.</p>
-    <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-      <button class="btn btn-primary" onclick="exportJson()">⬇ 다운로드</button>
-      <button class="btn btn-ghost" onclick="copyJson()">클립보드 복사</button>
-      <button class="btn btn-ghost" onclick="importJson()">⬆ 파일 불러오기</button>
-      <input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(event)">
-    </div>
-  </div>
-
+  <!-- 위험 영역 -->
   <div class="admin-section">
     <h2>위험 영역</h2>
     <button class="btn btn-danger" onclick="clearAll()">전체 구독자 삭제</button>
@@ -94,15 +105,15 @@ body{background:var(--c-bg,#f5f3ee);}
 </div>
 
 <script>
-// ── 비밀번호 게이트 ──────────────────────────────
-var ADMIN_PW = 'bf2026'; // 변경 가능
+// ── 비밀번호 게이트 ──────────────────────────────────────────
+var ADMIN_PW = 'bf2026';
 
 function checkPw(){
   var v = document.getElementById('pw-input').value;
   if(v === ADMIN_PW){
     localStorage.setItem('sa_admin_auth','1');
     document.getElementById('gate').style.display='none';
-    loadSubs();
+    init();
   } else {
     document.getElementById('pw-error').style.display='block';
   }
@@ -111,22 +122,99 @@ function checkPw(){
 (function(){
   if(localStorage.getItem('sa_admin_auth')==='1'){
     document.getElementById('gate').style.display='none';
-    loadSubs();
+    init();
   }
 })();
 
-// ── 구독자 관리 ──────────────────────────────────
+// ── 상태 ────────────────────────────────────────────────────
 var KEY = 'sa_subscribers';
+var dirHandle = null;  // FileSystemDirectoryHandle
+var DB_NAME   = 'sa_admin_db';
+var DB_STORE  = 'handles';
 
+// ── IndexedDB — 폴더 핸들 저장/복원 ─────────────────────────
+function openDB(){
+  return new Promise(function(res, rej){
+    var req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = function(e){ e.target.result.createObjectStore(DB_STORE); };
+    req.onsuccess = function(e){ res(e.target.result); };
+    req.onerror   = function(e){ rej(e); };
+  });
+}
+function saveHandle(h){
+  return openDB().then(function(db){
+    return new Promise(function(res,rej){
+      var tx = db.transaction(DB_STORE,'readwrite');
+      tx.objectStore(DB_STORE).put(h,'dirHandle');
+      tx.oncomplete=res; tx.onerror=rej;
+    });
+  });
+}
+function loadHandle(){
+  return openDB().then(function(db){
+    return new Promise(function(res,rej){
+      var tx = db.transaction(DB_STORE,'readonly');
+      var req = tx.objectStore(DB_STORE).get('dirHandle');
+      req.onsuccess=function(e){ res(e.target.result||null); };
+      req.onerror=rej;
+    });
+  });
+}
+
+// ── 폴더 연결 ────────────────────────────────────────────────
+async function connectFolder(){
+  if(!window.showDirectoryPicker){
+    alert('이 기능은 Chrome/Edge에서만 지원됩니다.');
+    return;
+  }
+  try {
+    var h = await window.showDirectoryPicker({mode:'readwrite'});
+    dirHandle = h;
+    await saveHandle(h);
+    setFsBar(h.name);
+    await writeFile();
+  } catch(e){
+    if(e.name !== 'AbortError') alert('폴더 연결 실패: ' + e.message);
+  }
+}
+
+function setFsBar(name){
+  var bar = document.getElementById('fs-bar');
+  bar.className = 'fs-bar connected';
+  document.getElementById('fs-label').textContent = '연결됨: ' + name + ' — 변경 시 자동 저장';
+}
+
+// ── subscribers.json 파일 쓰기 ───────────────────────────────
+async function writeFile(){
+  if(!dirHandle) return;
+  try {
+    var fh = await dirHandle.getFileHandle('subscribers.json',{create:true});
+    var w  = await fh.createWritable();
+    await w.write(JSON.stringify(getSubs(), null, 2));
+    await w.close();
+  } catch(e){
+    if(e.name === 'NotAllowedError'){
+      // 권한 재요청
+      await dirHandle.requestPermission({mode:'readwrite'});
+      await writeFile();
+    } else {
+      console.error('파일 쓰기 실패:', e);
+    }
+  }
+}
+
+// ── 구독자 관리 ──────────────────────────────────────────────
 function getSubs(){ try{ return JSON.parse(localStorage.getItem(KEY)||'[]'); }catch(e){ return []; } }
-function saveSubs(arr){ localStorage.setItem(KEY, JSON.stringify(arr, null, 2)); }
+function saveSubs(arr){
+  localStorage.setItem(KEY, JSON.stringify(arr, null, 2));
+  writeFile();  // 자동 파일 저장
+}
 
 function loadSubs(){
   var subs = getSubs();
-  var list = document.getElementById('sub-list');
   document.getElementById('stat-total').textContent = subs.length;
   document.getElementById('stat-posco').textContent = subs.filter(function(s){ return s.email.endsWith('@posco.com'); }).length;
-
+  var list = document.getElementById('sub-list');
   if(!subs.length){
     list.innerHTML = '<li class="empty-note">구독자가 없습니다.</li>';
     return;
@@ -134,7 +222,7 @@ function loadSubs(){
   list.innerHTML = subs.map(function(s, i){
     return '<li class="sub-item">'
       + '<div>' + esc(s.email) + (s.name ? '<span>' + esc(s.name) + '</span>' : '') + '</div>'
-      + '<button class="btn btn-danger" style="padding:.25rem .6rem;font-size:.78rem" onclick="removeSub(' + i + ')">삭제</button>'
+      + '<button class="btn btn-danger" style="padding:.25rem .6rem;font-size:.78rem" onclick="removeSub('+i+')">삭제</button>'
       + '</li>';
   }).join('');
 }
@@ -144,62 +232,40 @@ function addSub(){
   var name  = document.getElementById('new-name').value.trim();
   if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ alert('유효한 이메일을 입력하세요.'); return; }
   var subs = getSubs();
-  if(subs.some(function(s){ return s.email === email; })){ alert('이미 등록된 이메일입니다.'); return; }
-  subs.push({ email: email, name: name, added: new Date().toISOString().slice(0,10) });
+  if(subs.some(function(s){ return s.email===email; })){ alert('이미 등록된 이메일입니다.'); return; }
+  subs.push({email:email, name:name, added:new Date().toISOString().slice(0,10)});
   saveSubs(subs);
-  document.getElementById('new-email').value = '';
-  document.getElementById('new-name').value = '';
+  document.getElementById('new-email').value='';
+  document.getElementById('new-name').value='';
   loadSubs();
 }
 
 function removeSub(i){
-  var subs = getSubs();
-  subs.splice(i,1);
-  saveSubs(subs);
-  loadSubs();
+  var subs = getSubs(); subs.splice(i,1); saveSubs(subs); loadSubs();
 }
 
 function clearAll(){
   if(!confirm('전체 구독자를 삭제하시겠습니까?')) return;
-  saveSubs([]);
-  loadSubs();
-}
-
-// ── JSON 내보내기 / 가져오기 ─────────────────────
-function exportJson(){
-  var json = JSON.stringify(getSubs(), null, 2);
-  var a = document.createElement('a');
-  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
-  a.download = 'subscribers.json';
-  a.click();
-}
-
-function copyJson(){
-  var json = JSON.stringify(getSubs(), null, 2);
-  navigator.clipboard.writeText(json).then(function(){ alert('복사됨!'); });
-}
-
-function importJson(){
-  document.getElementById('import-file').click();
-}
-
-function handleImport(e){
-  var file = e.target.files[0];
-  if(!file) return;
-  var reader = new FileReader();
-  reader.onload = function(ev){
-    try{
-      var arr = JSON.parse(ev.target.result);
-      if(!Array.isArray(arr)) throw new Error();
-      saveSubs(arr);
-      loadSubs();
-      alert('불러오기 완료: ' + arr.length + '명');
-    } catch(err){ alert('유효하지 않은 JSON 파일입니다.'); }
-  };
-  reader.readAsText(file);
+  saveSubs([]); loadSubs();
 }
 
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── 초기화 ───────────────────────────────────────────────────
+async function init(){
+  loadSubs();
+  // 이전에 연결했던 폴더 핸들 복원
+  try {
+    var h = await loadHandle();
+    if(h){
+      var perm = await h.queryPermission({mode:'readwrite'});
+      if(perm === 'granted'){
+        dirHandle = h;
+        setFsBar(h.name);
+      }
+    }
+  } catch(e){ /* 무시 */ }
+}
 </script>
 </body>
 </html>
