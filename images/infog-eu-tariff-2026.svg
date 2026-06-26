@@ -1,0 +1,50 @@
+<svg viewBox="0 0 620 310" xmlns="http://www.w3.org/2000/svg"
+  style="width:100%;max-width:620px;height:auto;display:block;border-radius:10px;"
+  aria-labelledby="infog-title" role="img">
+  <title id="infog-title">글로벌 철강 무역 장벽 변화 2026 — EU 세이프가드 강화와 미국 232조 관세</title>
+  <desc>EU는 7월부터 무관세 쿼터를 절반으로 줄이고 초과관세를 25%에서 50%로 올린다. 미국 232조 관세는 50% 유지.</desc>
+  <rect width="620" height="310" fill="#fbfaf7" rx="10"/>
+  <rect width="620" height="44" fill="#11161d" rx="10"/>
+  <rect y="34" width="620" height="10" fill="#11161d"/>
+  <text x="310" y="27" text-anchor="middle" font-size="13" font-weight="700"
+    fill="#e8e2d8" font-family="system-ui,sans-serif" letter-spacing="0.08em">글로벌 철강 무역 장벽 변화 · 2026</text>
+  <text x="30" y="72" font-size="11.5" font-weight="800" fill="#2b4a6f"
+    font-family="system-ui,sans-serif" letter-spacing="0.1em">EU 철강 세이프가드</text>
+  <text x="30" y="87" font-size="10" fill="#6b6459" font-family="system-ui,sans-serif">2026년 7월 1일 발효</text>
+  <text x="30" y="116" font-size="10" fill="#6b6459" font-family="system-ui,sans-serif">6월까지</text>
+  <text x="30" y="159" font-size="10" fill="#D62828" font-weight="700" font-family="system-ui,sans-serif">7월부터 ▶</text>
+  <rect x="85" y="102" width="160" height="24" rx="3" fill="#2b4a6f" opacity="0.22"/>
+  <rect x="85" y="102" width="160" height="24" rx="3" fill="none" stroke="#2b4a6f" stroke-width="1.2" opacity="0.4"/>
+  <text x="165" y="118" text-anchor="middle" font-size="9.5" fill="#2b4a6f" font-weight="600"
+    font-family="system-ui,sans-serif">무관세 쿼터 100%</text>
+  <rect x="250" y="102" width="44" height="24" rx="3" fill="#D62828" opacity="0.28"/>
+  <text x="272" y="118" text-anchor="middle" font-size="10" fill="#D62828" font-weight="700"
+    font-family="system-ui,sans-serif">+25%</text>
+  <rect x="85" y="145" width="80" height="24" rx="3" fill="#2b4a6f" opacity="0.65"/>
+  <text x="125" y="161" text-anchor="middle" font-size="9" fill="#fff" font-weight="700"
+    font-family="system-ui,sans-serif">쿼터 ~50%</text>
+  <rect x="165" y="145" width="80" height="24" rx="3" fill="#e6e0d4" stroke="#c8c0b4" stroke-width="1"
+    stroke-dasharray="4,3"/>
+  <text x="205" y="161" text-anchor="middle" font-size="9" fill="#9a8a7a" font-family="system-ui,sans-serif">삭감</text>
+  <rect x="250" y="145" width="63" height="24" rx="3" fill="#D62828" opacity="0.88"/>
+  <text x="281" y="161" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="800"
+    font-family="system-ui,sans-serif">+50%</text>
+  <text x="30" y="195" font-size="9.5" fill="#D62828" font-weight="700" font-family="system-ui,sans-serif">초과관세 2배 + 쿼터 절반 동시 적용</text>
+  <text x="30" y="210" font-size="9.5" fill="#6b6459" font-family="system-ui,sans-serif">+ CBAM 탄소국경조정 같은 시기 본격화</text>
+  <line x1="325" y1="55" x2="325" y2="265" stroke="#e6e0d4" stroke-width="1.2"/>
+  <text x="345" y="72" font-size="11.5" font-weight="800" fill="#2b4a6f"
+    font-family="system-ui,sans-serif" letter-spacing="0.1em">미국 232조 관세</text>
+  <text x="345" y="87" font-size="10" fill="#6b6459" font-family="system-ui,sans-serif">2025년 6월 50%로 인상 후 유지</text>
+  <rect x="345" y="102" width="245" height="52" rx="5" fill="#D62828" opacity="0.9"/>
+  <text x="467" y="136" text-anchor="middle" font-size="32" font-weight="800" fill="#fff"
+    font-family="system-ui,sans-serif">50%</text>
+  <circle cx="351" cy="177" r="3" fill="#D62828"/>
+  <text x="360" y="181" font-size="9.5" fill="#1a1a18" font-family="system-ui,sans-serif">미국 내수 vs 세계 가격 격차 확대</text>
+  <circle cx="351" cy="196" r="3" fill="#D62828"/>
+  <text x="360" y="200" font-size="9.5" fill="#1a1a18" font-family="system-ui,sans-serif">수입 불리 → 현지 생산이 유리한 구도 고착</text>
+  <circle cx="351" cy="215" r="3" fill="#2b4a6f"/>
+  <text x="360" y="219" font-size="9.5" fill="#2b4a6f" font-weight="600" font-family="system-ui,sans-serif">한국 루이지애나 EAF 신설 (2029년 예정)</text>
+  <line x1="30" y1="270" x2="590" y2="270" stroke="#e6e0d4" stroke-width="1"/>
+  <text x="30" y="285" font-size="8.5" fill="#9a8a7a" font-family="system-ui,sans-serif">자료: S&amp;P Global, Fastmarkets (2026) · EU 세이프가드 공식 발표 · 공개 자료 기반 편집실 작성</text>
+  <text x="590" y="285" text-anchor="end" font-size="8.5" fill="#9a8a7a" font-family="system-ui,sans-serif">© 철강 주재원</text>
+</svg>
