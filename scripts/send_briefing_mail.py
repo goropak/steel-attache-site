@@ -256,27 +256,55 @@ def send(post, content, subs, dry_run=False):
 
     print(f"\n완료: 성공 {ok} / 실패 {fail} / 전체 {ok+fail}")
 
+# ── 특정 포스트 검색 ──────────────────────────────────────────
+def find_post_by_url(url_fragment):
+    """URL 일부로 포스트를 찾는다. 예: 'china-tech-01' 또는 'posts/china-tech-01.html'"""
+    with open(POSTS_F, encoding="utf-8") as f:
+        posts = json.load(f)
+    for p in posts:
+        if url_fragment in p.get("url", ""):
+            return p
+    return None
+
 # ── 메인 ─────────────────────────────────────────────────────
 if __name__ == "__main__":
-    dry = "--dry" in sys.argv
+    import argparse
+    parser = argparse.ArgumentParser(description="철강 주재원 구독자 메일 발송")
+    parser.add_argument("--dry", action="store_true", help="발송 안 함 (테스트)")
+    parser.add_argument("--post", type=str, default=None,
+                        help="특정 포스트 지정 (예: china-tech-01 또는 posts/china-tech-01.html)")
+    args = parser.parse_args()
+    dry = args.dry
 
     subs = load_subscribers()
     if not subs:
         print("[!] 구독자가 없습니다. admin.html에서 추가 후 site/data/subscribers.json을 저장하세요.")
         sys.exit(0)
 
-    post = load_latest_post()
+    if args.post:
+        post = find_post_by_url(args.post)
+        if not post:
+            print(f"[!] '{args.post}'에 해당하는 포스트를 posts.json에서 찾을 수 없습니다.")
+            print("    등록된 포스트 목록:")
+            with open(POSTS_F, encoding="utf-8") as f:
+                for p in json.load(f):
+                    print(f"      {p.get('url','')}  ←  {p.get('title','')[:40]}")
+            sys.exit(1)
+        print(f"[지정 포스트] {post.get('title')}")
+    else:
+        post = load_latest_post()
+
     if not post:
         print("[!] posts.json이 비어 있습니다.")
         sys.exit(1)
 
-    # 브리핑 HTML 파싱
+    # HTML 파싱
     post_path = POSTS_DIR / Path(post.get("url","")).name
     content = {"h2s":[], "leads":[], "blockquotes":[], "summary": post.get("summary","")}
     if post_path.exists():
         content = parse_briefing(post_path)
 
-    print(f"브리핑: {post.get('title')}")
+    print(f"포스트: {post.get('title')}")
     print(f"구독자: {len(subs)}명{'  [DRY RUN]' if dry else ''}")
     print("-" * 40)
     send(post, content, subs, dry_run=dry)
