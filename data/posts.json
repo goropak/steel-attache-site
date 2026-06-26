@@ -1,13 +1,23 @@
 [
   {
+    "title": "포스코 전기로 가동 + 세계 조강 — 숫자로 증명된 구조 전환",
+    "summary": "포스코 광양 국내 최대 전기로(연 250만t) 6월 가동. worldsteel 5월 조강 157.9Mt — 중국 -2.7%, 미국 +9.2%, 북미 +15.6%. 숫자가 증명하는 구조 전환.",
+    "category": "주간브리핑",
+    "author": "편집실",
+    "date": "2026-06-26",
+    "url": "posts/briefing-2026-06-26.html",
+    "thumb": "images/thumb-briefing-0626.svg",
+    "featured": "hero"
+  },
+  {
     "title": "EU 세이프가드 강화·미국 관세 유지 속, 한국의 현지생산 카드",
     "summary": "EU 철강 세이프가드가 7월 대폭 강화(쿼터 절반↓·초과관세 25→50%), 미국은 50% 관세 유지. 포스코·현대제철은 미국 EAF와 전기강판에서 보폭을 넓혔고, 중국은 감산 기조를 이어간다.",
     "category": "주간브리핑",
     "author": "편집실",
     "date": "2026-06-21",
     "url": "posts/briefing-2026-06-21.html",
-    "thumb": "",
-    "featured": "hero"
+    "thumb": "images/infog-eu-tariff-2026.svg",
+    "featured": "side"
   },
   {
     "title": "야하타에서 US Steel까지 — 일본 제철 124년, 첫 번째 나무",
@@ -16,7 +26,7 @@
     "author": "편집실",
     "date": "2026-06-20",
     "url": "posts/japan-01.html",
-    "thumb": "",
+    "thumb": "images/thumb-japan-01.svg",
     "featured": "side"
   },
   {
@@ -26,17 +36,7 @@
     "author": "편집실",
     "date": "2026-06-20",
     "url": "posts/forest-01.html",
-    "thumb": "",
+    "thumb": "images/thumb-forest-01.svg",
     "featured": "side"
-  },
-  {
-    "title": "주간 브리핑 — 2026년 6월 26일",
-    "summary": "2026년 6월 26일 주간 브리핑. 이번 주 게시 0건, 외부 뉴스 0건 수집.",
-    "category": "주간브리핑",
-    "author": "편집실",
-    "date": "2026-06-26",
-    "url": "posts/briefing-2026-06-26.html",
-    "thumb": "",
-    "featured": "false"
   }
 ]

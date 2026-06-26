@@ -1,0 +1,67 @@
+<svg viewBox="0 0 620 310" xmlns="http://www.w3.org/2000/svg"
+  style="width:100%;max-width:620px;height:auto;display:block;border-radius:10px;"
+  aria-labelledby="thumb-brief-title" role="img">
+  <title id="thumb-brief-title">주간 브리핑 2026-06-26 — POSCO 전기로 가동, 세계 조강 157.9Mt</title>
+  <rect width="620" height="310" fill="#fbfaf7" rx="10"/>
+  <rect width="620" height="44" fill="#11161d" rx="10"/>
+  <rect y="34" width="620" height="10" fill="#11161d"/>
+  <text x="310" y="27" text-anchor="middle" font-size="12" font-weight="700"
+    fill="#e8e2d8" font-family="system-ui,sans-serif" letter-spacing="0.06em">세계 5월 조강 157.9Mt · POSCO 전기로 가동</text>
+
+  <!-- 왼쪽: 국가별 생산 변화율 바 차트 -->
+  <text x="40" y="72" font-size="10.5" font-weight="800" fill="#11161d" font-family="system-ui,sans-serif">세계 주요국 5월 조강 증감 (YoY)</text>
+
+  <!-- 북미 +15.6% -->
+  <text x="40" y="96" font-size="9" fill="#4a4a4a" font-family="system-ui,sans-serif">북미</text>
+  <rect x="90" y="85" width="124" height="16" rx="2" fill="#D62828" opacity="0.85"/>
+  <text x="218" y="97" font-size="9" font-weight="700" fill="#D62828" font-family="system-ui,sans-serif"> +15.6%</text>
+
+  <!-- 미국 +9.2% -->
+  <text x="40" y="120" font-size="9" fill="#4a4a4a" font-family="system-ui,sans-serif">미국</text>
+  <rect x="90" y="109" width="74" height="16" rx="2" fill="#b1471f" opacity="0.85"/>
+  <text x="168" y="121" font-size="9" font-weight="700" fill="#b1471f" font-family="system-ui,sans-serif"> +9.2%</text>
+
+  <!-- 인도 +1.9% -->
+  <text x="40" y="144" font-size="9" fill="#4a4a4a" font-family="system-ui,sans-serif">인도</text>
+  <rect x="90" y="133" width="15" height="16" rx="2" fill="#c8a060" opacity="0.85"/>
+  <text x="109" y="145" font-size="9" font-weight="600" fill="#c8a060" font-family="system-ui,sans-serif"> +1.9%</text>
+
+  <!-- EU -0.4% -->
+  <text x="40" y="168" font-size="9" fill="#4a4a4a" font-family="system-ui,sans-serif">EU</text>
+  <rect x="90" y="157" width="3" height="16" rx="2" fill="#9a8a7a" opacity="0.6"/>
+  <text x="97" y="169" font-size="9" fill="#9a8a7a" font-family="system-ui,sans-serif"> -0.4%</text>
+
+  <!-- 중국 -2.7% -->
+  <text x="40" y="192" font-size="9" fill="#4a4a4a" font-family="system-ui,sans-serif">중국</text>
+  <rect x="68" y="181" width="22" height="16" rx="2" fill="#2b4a6f" opacity="0.7"/>
+  <text x="68" y="192" text-anchor="end" font-size="9" fill="#2b4a6f" font-family="system-ui,sans-serif">-2.7% </text>
+
+  <line x1="90" y1="75" x2="90" y2="205" stroke="#c8c0b4" stroke-width="1"/>
+
+  <!-- 구분선 -->
+  <line x1="310" y1="55" x2="310" y2="265" stroke="#e6e0d4" stroke-width="1.2"/>
+
+  <!-- 오른쪽: POSCO EAF 카드 -->
+  <text x="330" y="72" font-size="10.5" font-weight="800" fill="#11161d" font-family="system-ui,sans-serif">POSCO 광양 전기로 (EAF) 가동</text>
+  <text x="330" y="87" font-size="9" fill="#6b6459" font-family="system-ui,sans-serif">2026년 6월 · 국내 최대</text>
+
+  <rect x="330" y="98" width="258" height="58" rx="6" fill="#D62828" opacity="0.08" stroke="#D62828" stroke-width="1"/>
+  <text x="459" y="120" text-anchor="middle" font-size="26" font-weight="800" fill="#D62828" font-family="system-ui,sans-serif">250만t</text>
+  <text x="459" y="138" text-anchor="middle" font-size="9" fill="#b1471f" font-family="system-ui,sans-serif">연간 생산 능력 / 투자 6,000억 원</text>
+  <text x="459" y="150" text-anchor="middle" font-size="8.5" fill="#6b6459" font-family="system-ui,sans-serif">고로 대비 탄소 배출 75% 감축</text>
+
+  <!-- 포인트 3개 -->
+  <circle cx="338" cy="173" r="3" fill="#D62828"/>
+  <text x="346" y="177" font-size="9" fill="#1a1a18" font-family="system-ui,sans-serif">이탈리아 Tenova Consteel 연속투입 시스템</text>
+  <circle cx="338" cy="191" r="3" fill="#D62828"/>
+  <text x="346" y="195" font-size="9" fill="#1a1a18" font-family="system-ui,sans-serif">2026년 스크랩 구매 약 200만 톤 예상</text>
+  <circle cx="338" cy="209" r="3" fill="#2b4a6f"/>
+  <text x="346" y="213" font-size="9" fill="#2b4a6f" font-weight="600" font-family="system-ui,sans-serif">저탄소 전환 — 글로벌 CBAM 대응 선행</text>
+
+  <!-- 하단 -->
+  <line x1="30" y1="240" x2="590" y2="240" stroke="#e6e0d4" stroke-width="1"/>
+  <text x="30" y="258" font-size="8.5" fill="#9a8a7a" font-family="system-ui,sans-serif">worldsteel 2026-05 · Korea Times · GMK Center · 공개 자료 기반</text>
+  <text x="590" y="258" text-anchor="end" font-size="8.5" fill="#9a8a7a" font-family="system-ui,sans-serif">© 철강 주재원 2026-06-26</text>
+
+  <text x="30" y="278" font-size="9.5" font-weight="600" fill="#4a4a4a" font-family="system-ui,sans-serif">대상 기간: 2026-06-19 ~ 06-26</text>
+</svg>
