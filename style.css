@@ -202,6 +202,11 @@ img { max-width: 100%; height: auto; display: block; }
 .gnb-item.soon { color: var(--c-text-sub); font-weight: 400; }
 
 /* ---------- 포털 피처드 그리드 ---------- */
+/* D2.5: JS inject 전 공간 예약 → CLS 방지 */
+#feat-hero { min-height: 420px; }
+#feat-left, #feat-right { min-height: 200px; }
+#latest-grid { min-height: 300px; }
+
 .portal-main { padding: var(--sp-5) 0 var(--sp-6); }
 .portal-featured {
   display: grid;
