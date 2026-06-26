@@ -172,9 +172,26 @@ async function connectFolder(){
     dirHandle = h;
     await saveHandle(h);
     setFsBar(h.name);
-    await writeFile();
+    await readFileIntoStore();  // 파일 → localStorage 동기화
+    loadSubs();
   } catch(e){
     if(e.name !== 'AbortError') alert('폴더 연결 실패: ' + e.message);
+  }
+}
+
+// ── subscribers.json 파일 → localStorage 읽기 ─────────────────
+async function readFileIntoStore(){
+  if(!dirHandle) return;
+  try {
+    var fh = await dirHandle.getFileHandle('subscribers.json', {create:false});
+    var file = await fh.getFile();
+    var text = await file.text();
+    var arr  = JSON.parse(text);
+    if(Array.isArray(arr) && arr.length > 0){
+      localStorage.setItem(KEY, JSON.stringify(arr, null, 2));
+    }
+  } catch(e){
+    // 파일 없으면 무시 (새로 생성될 예정)
   }
 }
 
@@ -253,7 +270,7 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 
 // ── 초기화 ───────────────────────────────────────────────────
 async function init(){
-  loadSubs();
+  loadSubs();  // 먼저 localStorage로 표시
   // 이전에 연결했던 폴더 핸들 복원
   try {
     var h = await loadHandle();
@@ -262,6 +279,8 @@ async function init(){
       if(perm === 'granted'){
         dirHandle = h;
         setFsBar(h.name);
+        await readFileIntoStore();  // 파일 → localStorage 동기화
+        loadSubs();                 // 파일 기준으로 재표시
       }
     }
   } catch(e){ /* 무시 */ }
