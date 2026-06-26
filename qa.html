@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q&amp;A — 철강 주재원</title>
+<meta name="description" content="철강 주재원에게 물어보세요. 해외 철강·제철소 관련 질문 아카이브.">
+<link rel="stylesheet" href="style.css">
+<style>
+.qa-hero{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:2.5rem 0 2rem;}
+.qa-hero h1{font-size:1.75rem;margin:0 0 .5rem;font-family:var(--f-serif,Georgia,serif);}
+.qa-hero p{color:var(--c-muted);margin:0;}
+.qa-tabs{display:flex;gap:.5rem;flex-wrap:wrap;padding:1.25rem 0 0;}
+.qa-tab{padding:.35rem .9rem;border-radius:99px;font-size:.85rem;cursor:pointer;
+  background:var(--c-bg);border:1px solid var(--c-border);color:var(--c-ink);}
+.qa-tab.active{background:var(--accent,#D62828);color:#fff;border-color:transparent;}
+.qa-grid{display:grid;gap:1rem;margin-top:1.5rem;}
+.qa-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:8px;
+  padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.5rem;}
+.qa-card.published{cursor:pointer;}
+.qa-card.published:hover{border-color:var(--accent,#D62828);}
+.qa-card-cat{font-size:.78rem;font-weight:600;color:var(--accent,#D62828);
+  text-transform:uppercase;letter-spacing:.04em;}
+.qa-card-q{font-size:1.05rem;font-weight:600;line-height:1.4;color:var(--c-ink);}
+.qa-card-meta{font-size:.82rem;color:var(--c-muted);display:flex;gap:.75rem;align-items:center;}
+.badge{display:inline-flex;align-items:center;gap:.25rem;padding:.15rem .5rem;
+  border-radius:4px;font-size:.75rem;font-weight:600;}
+.badge-pending{background:#f3f4f6;color:#6b7280;}
+.badge-processing{background:#fef3c7;color:#92400e;}
+.badge-draft{background:#dbeafe;color:#1e40af;}
+.badge-published{background:#d1fae5;color:#065f46;}
+.qa-empty{text-align:center;color:var(--c-muted);padding:3rem;font-size:.95rem;}
+@media(max-width:600px){
+  .qa-hero{padding:1.5rem 0 1rem;}
+  .qa-hero h1{font-size:1.4rem;}
+}
+</style>
+</head>
+<body>
+<header class="masthead"><div class="wrap">
+  <div class="mh-brand">
+    <svg class="mh-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="9" fill="#11161d" stroke="#3a4654"/><path d="M20 8 L31 30 H9 Z" fill="none" stroke="#D62828" stroke-width="2.4" stroke-linejoin="round"/><path d="M20 20 L26 30 H14 Z" fill="#D62828"/><circle cx="20" cy="26.5" r="1.7" fill="#ffd9a8"/></svg>
+    <div class="mh-title"><a href="index.html">철강 주재원</a><span class="sub">Steel Attaché</span></div>
+  </div>
+  <nav class="mh-nav"><a href="index.html">홈</a><a href="qa.html" aria-current="page">Q&amp;A</a></nav>
+</div></header>
+
+<section class="qa-hero">
+  <div class="wrap">
+    <h1>Q&amp;A 아카이브</h1>
+    <p>해외 철강·제철소 관련 질문과 답변. Telegram <code>/ask</code> 커맨드로 질문을 남겨보세요.</p>
+    <div class="qa-tabs" id="tabs">
+      <button class="qa-tab active" data-cat="">전체</button>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="wrap">
+    <div class="qa-grid" id="qa-grid">
+      <div class="qa-empty">불러오는 중…</div>
+    </div>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <div class="b">철강 주재원</div>
+  <div class="s">포스코의 눈으로 읽는 세계 철강 분석 · 공개 자료 기반, 출처 명기</div>
+</div></footer>
+
+<script>
+(function(){
+  var BADGE = {
+    pending:    '<span class="badge badge-pending">조사 대기</span>',
+    processing: '<span class="badge badge-processing">조사 중</span>',
+    draft:      '<span class="badge badge-draft">검토 중</span>',
+    published:  '<span class="badge badge-published">게시됨</span>'
+  };
+
+  var allItems = [];
+  var activeTab = '';
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function renderGrid(items){
+    var grid = document.getElementById('qa-grid');
+    if(!items.length){
+      grid.innerHTML = '<div class="qa-empty">질문이 없습니다.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(function(q){
+      var badge = BADGE[q.status] || BADGE.pending;
+      var isPublished = q.status === 'published' && q.url;
+      var card = '<div class="qa-card' + (isPublished ? ' published' : '') + '"'
+        + (isPublished ? ' role="link" tabindex="0" data-href="' + esc(q.url) + '" onclick="goCard(this)" onkeydown="keyCard(event,this)"' : '')
+        + '>'
+        + '<div class="qa-card-cat">' + esc(q.category) + '</div>'
+        + '<div class="qa-card-q">' + esc(q.question) + '</div>'
+        + '<div class="qa-card-meta">' + badge + '<span>' + esc(q.created) + '</span></div>'
+        + '</div>';
+      return card;
+    }).join('');
+  }
+
+  function buildTabs(items){
+    var cats = [];
+    items.forEach(function(q){ if(q.category && cats.indexOf(q.category)<0) cats.push(q.category); });
+    var tabsEl = document.getElementById('tabs');
+    cats.forEach(function(c){
+      var btn = document.createElement('button');
+      btn.className = 'qa-tab';
+      btn.dataset.cat = c;
+      btn.textContent = c;
+      btn.addEventListener('click', onTab);
+      tabsEl.appendChild(btn);
+    });
+  }
+
+  function onTab(e){
+    activeTab = e.target.dataset.cat;
+    document.querySelectorAll('.qa-tab').forEach(function(t){
+      t.classList.toggle('active', t.dataset.cat === activeTab);
+    });
+    var filtered = activeTab ? allItems.filter(function(q){ return q.category === activeTab; }) : allItems;
+    renderGrid(filtered);
+  }
+
+  document.querySelectorAll('.qa-tab').forEach(function(t){ t.addEventListener('click', onTab); });
+
+  window.goCard = function(el){ window.location.href = el.dataset.href; };
+  window.keyCard = function(ev, el){ if(ev.key==='Enter'||ev.key===' ') window.location.href = el.dataset.href; };
+
+  fetch('data/questions.json?v=' + Date.now())
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      allItems = data.slice().sort(function(a,b){ return b.created > a.created ? 1 : -1; });
+      buildTabs(allItems);
+      renderGrid(allItems);
+    })
+    .catch(function(){
+      document.getElementById('qa-grid').innerHTML =
+        '<div class="qa-empty">질문 데이터를 불러오지 못했습니다.</div>';
+    });
+})();
+</script>
+</body>
+</html>
