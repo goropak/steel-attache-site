@@ -199,7 +199,9 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .gnb-item:hover { color: var(--c-accent); border-bottom-color: var(--c-accent); text-decoration: none; }
 .gnb-item.active { color: var(--c-accent); border-bottom-color: var(--c-accent); }
-.gnb-item.soon { color: var(--c-text-sub); font-weight: 400; }
+/* soon: 콘텐츠 예정 항목 — 검정 텍스트 유지, 이탤릭 없음. active와 겹칠 때 active 우선 */
+.gnb-item.soon { color: var(--c-text); font-weight: 500; }
+.gnb-item.soon.active, .gnb-item.active.soon { color: var(--c-accent); border-bottom-color: var(--c-accent); }
 
 /* ---------- 포털 피처드 그리드 ---------- */
 /* D2.5: JS inject 전 공간 예약 → CLS 방지 */
@@ -537,7 +539,11 @@ article sup { font-size: .66em; color: var(--c-link); font-weight: 600; }
 article hr { border: none; height: 1px; background: var(--c-border); margin: 42px 0; }
 
 /* 기사 본문 가독성 오버라이드 (STYLE-GUIDE A 우선) */
-.article-body { font-size: 1.125rem; line-height: 1.8; max-width: 680px; }
+/* article p/li에 직접 적용: 18px · 행간 1.875 (한글 권장 1.8-1.9) */
+article p, article li { font-size: 1.125rem; line-height: 1.875; }
+article .lead p { font-size: 1.125rem; line-height: 1.875; }
+article blockquote { font-size: 1.125rem; line-height: 1.8; }
+.article-body { font-size: 1.125rem; line-height: 1.875; max-width: 680px; }
 
 .notes {
   font-size: .86rem;
