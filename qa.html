@@ -10,6 +10,8 @@
 .qa-hero{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:2.5rem 0 2rem;}
 .qa-hero h1{font-size:1.75rem;margin:0 0 .5rem;font-family:var(--f-serif,Georgia,serif);}
 .qa-hero p{color:var(--c-muted);margin:0;}
+.qa-ask-btn{display:inline-block;margin:.75rem 0 0;padding:.55rem 1.4rem;background:var(--accent,#D62828);color:#fff;border-radius:99px;font-size:.9rem;font-weight:600;text-decoration:none;letter-spacing:.02em;}
+.qa-ask-btn:hover{opacity:.88;}
 .qa-tabs{display:flex;gap:.5rem;flex-wrap:wrap;padding:1.25rem 0 0;}
 .qa-tab{padding:.35rem .9rem;border-radius:99px;font-size:.85rem;cursor:pointer;
   background:var(--c-bg);border:1px solid var(--c-border);color:var(--c-ink);}
@@ -48,7 +50,10 @@
 <section class="qa-hero">
   <div class="wrap">
     <h1>Q&amp;A 아카이브</h1>
-    <p>해외 철강·제철소 관련 질문과 답변. Telegram <code>/ask</code> 커맨드로 질문을 남겨보세요.</p>
+    <p>해외 철강·제철소·무역 관련 궁금한 점을 질문해 주세요. 검토 후 답변을 게시합니다.</p>
+    <a class="qa-ask-btn"
+       href="mailto:csband8@gmail.com?subject=%5B질문%5D%20철강%20주재원&body=질문%3A%0A%0A(궁금한%20내용을%20자유롭게%20적어주세요)"
+       >✉ 질문하기</a>
     <div class="qa-tabs" id="tabs">
       <button class="qa-tab active" data-cat="">전체</button>
     </div>
