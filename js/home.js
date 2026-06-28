@@ -74,6 +74,30 @@
       '</a>';
   }
 
+  /* 글 HTML에서 첫 번째 <figure class="infog"> SVG를 추출해 thumb div에 주입 */
+  function injectInfogThumb(articleUrl, thumbDiv) {
+    fetch(articleUrl)
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, 'text/html');
+        var fig = doc.querySelector('figure.infog');
+        if (fig) {
+          thumbDiv.style.background = '#11161d';
+          thumbDiv.style.padding = '0';
+          thumbDiv.style.display = 'block';
+          thumbDiv.innerHTML = fig.innerHTML;
+          var svg = thumbDiv.querySelector('svg');
+          if (svg) {
+            svg.style.width = '100%';
+            svg.style.height = 'auto';
+            svg.style.display = 'block';
+          }
+        }
+      })
+      .catch(function () {});
+  }
+
   function init() {
     fetch('data/posts.json')
       .then(function (r) { return r.json(); })
@@ -93,7 +117,14 @@
         var rightEl = document.getElementById('feat-right');
         var latestEl = document.getElementById('latest-grid');
 
-        if (heroEl && hero) heroEl.innerHTML = heroCard(hero);
+        if (heroEl && hero) {
+          heroEl.innerHTML = heroCard(hero);
+          /* thumb이 없으면 글의 첫 인포그래픽 SVG를 가져와 채운다 */
+          if (!hero.thumb) {
+            var thumbDiv = heroEl.querySelector('.card-thumb');
+            if (thumbDiv) injectInfogThumb(hero.url, thumbDiv);
+          }
+        }
         if (leftEl) leftEl.innerHTML = left.map(sideCard).join('');
         if (rightEl) rightEl.innerHTML = right.map(sideCard).join('');
         if (latestEl) latestEl.innerHTML = posts.map(latestCard).join('');

@@ -82,7 +82,7 @@ def clean(s):
     """비ASCII 공백 등 문제 문자 제거"""
     return s.replace('\xa0', ' ').replace('​', '').strip()
 
-def build_html(post, content, recipient_name=""):
+def build_html(post, content, recipient_name="", recipient_email=""):
     title    = post.get("title","주간 브리핑")
     date     = post.get("date", datetime.today().strftime("%Y-%m-%d"))
     post_url = SITE_URL + "/" + post.get("url","")
@@ -183,7 +183,7 @@ def build_html(post, content, recipient_name=""):
           공개 자료 기반, 출처 명기
         </td>
         <td align="right" style="font-size:11px;color:#c8c0b4;">
-          <a href="mailto:csband8@gmail.com?subject=구독해지" style="color:#c8c0b4;text-decoration:underline;">구독 해지</a>
+          <a href="{SITE_URL}/unsubscribe.html?email={recipient_email}" style="color:#c8c0b4;text-decoration:underline;">구독 해지</a>
         </td>
       </tr>
     </table>
@@ -224,7 +224,7 @@ def send(post, content, subs, dry_run=False):
     for sub in subs:
         email = sub["email"]
         name  = sub.get("name","")
-        html  = build_html(post, content, name)
+        html  = build_html(post, content, name, email)
         plain = f"{title}\n{SITE_URL}/{post.get('url','')}\n\n구독 해지: csband8@gmail.com"
 
         # \xa0 등 비ASCII 공백 전체 제거
