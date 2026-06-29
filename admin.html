@@ -213,8 +213,12 @@ function switchTab(name, btn){
 
 // ── 상태 ────────────────────────────────────────────────────
 var KEY = 'sa_subscribers';
-var QA_KEY = 'sa_questions';
 var dirHandle = null;
+// ── JSONBin (Q&A) ─────────────────────────────────────────────
+var BIN_ID = '6a4207a8da38895dfe0e3a49';
+var MASTER = '$2a$10$mls9sfMRYh36KcfjepWxqein1H/5xEIoRWy1Qy.vtFiNLSacqfL/O';
+var BIN_READ  = 'https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest';
+var BIN_WRITE = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 var DB_NAME   = 'sa_admin_db';
 var DB_STORE  = 'handles';
 
@@ -275,15 +279,7 @@ async function readSubsFile(){
   } catch(e){}
 }
 
-async function readQAFile(){
-  if(!dirHandle) return;
-  try {
-    var fh = await dirHandle.getFileHandle('questions.json',{create:false});
-    var text = await (await fh.getFile()).text();
-    var arr = JSON.parse(text);
-    if(Array.isArray(arr)) localStorage.setItem(QA_KEY, JSON.stringify(arr,null,2));
-  } catch(e){}
-}
+async function readQAFile(){ /* JSONBin 사용 — 별도 파일 읽기 불필요 */ }
 
 function setFsBar(name){
   var bar = document.getElementById('fs-bar');
@@ -302,14 +298,12 @@ async function writeSubsFile(){
   } catch(e){ if(e.name==='NotAllowedError'){ await dirHandle.requestPermission({mode:'readwrite'}); await writeSubsFile(); } }
 }
 
-async function writeQAFile(){
-  if(!dirHandle) return;
-  try {
-    var fh = await dirHandle.getFileHandle('questions.json',{create:true});
-    var w  = await fh.createWritable();
-    await w.write(JSON.stringify(getQAs(),null,2));
-    await w.close();
-  } catch(e){ if(e.name==='NotAllowedError'){ await dirHandle.requestPermission({mode:'readwrite'}); await writeQAFile(); } }
+async function writeQAFile(arr){
+  await fetch(BIN_WRITE, {
+    method:'PUT',
+    headers:{'Content-Type':'application/json','X-Master-Key':MASTER},
+    body: JSON.stringify(arr)
+  });
 }
 
 // ── 구독자 관리 ──────────────────────────────────────────────
@@ -346,111 +340,97 @@ function addSub(){
 function removeSub(i){ var subs=getSubs(); subs.splice(i,1); saveSubs(subs); loadSubs(); }
 function clearAll(){ if(!confirm('전체 구독자를 삭제?')) return; saveSubs([]); loadSubs(); }
 
-// ── Q&A 관리 ─────────────────────────────────────────────────
-function getQAs(){ try{ return JSON.parse(localStorage.getItem(QA_KEY)||'[]'); }catch(e){ return []; } }
-function saveQAs(arr){ localStorage.setItem(QA_KEY,JSON.stringify(arr,null,2)); writeQAFile(); }
+// ── Q&A 관리 (JSONBin) ────────────────────────────────────────
+var _qaItems = [];  // 메모리 캐시
 
-function reloadQA(){ readQAFile().then(loadQA); }
+function reloadQA(){ loadQA(); }
 
-function loadQA(){
-  var items = getQAs();
-  var total = items.length;
-  var pending = items.filter(function(q){ return q.status==='접수됨'; }).length;
-  var proc    = items.filter(function(q){ return q.status==='리서치중'; }).length;
-  var pub     = items.filter(function(q){ return q.status==='발행됨'; }).length;
-  document.getElementById('qa-stat-total').textContent = total;
-  document.getElementById('qa-stat-pending').textContent = pending;
-  document.getElementById('qa-stat-processing').textContent = proc;
-  document.getElementById('qa-stat-published').textContent = pub;
+async function loadQA(){
+  document.getElementById('qa-admin-list').innerHTML = '<div class="empty-note">불러오는 중…</div>';
+  try {
+    var r = await fetch(BIN_READ, { headers:{'X-Master-Key':MASTER} });
+    var d = await r.json();
+    _qaItems = (d.record||[]).slice().sort(function(a,b){ return (b.date||'')>(a.date||'')?1:-1; });
+  } catch(e){ _qaItems=[]; }
+  renderQA(_qaItems);
+}
+
+function renderQA(items){
+  document.getElementById('qa-stat-total').textContent = items.length;
+  document.getElementById('qa-stat-pending').textContent    = items.filter(function(q){ return q.status==='접수됨'; }).length;
+  document.getElementById('qa-stat-processing').textContent = items.filter(function(q){ return q.status==='리서치중'; }).length;
+  document.getElementById('qa-stat-published').textContent  = items.filter(function(q){ return q.status==='발행됨'; }).length;
 
   var list = document.getElementById('qa-admin-list');
-  if(!total){ list.innerHTML = '<div class="empty-note">질문이 없습니다.</div>'; return; }
-
-  // 최신순
-  var sorted = items.slice().sort(function(a,b){ return (b.date||'') > (a.date||'') ? 1:-1; });
-
-  list.innerHTML = '';
-  sorted.forEach(function(q, si){
-    // 원본 인덱스 찾기
-    var origIdx = items.indexOf(q);
-
-    var badgeMap = { '접수됨':'badge-pending', '리서치중':'badge-processing', '발행됨':'badge-published' };
-    var badgeCls = badgeMap[q.status] || 'badge-pending';
-
+  if(!items.length){ list.innerHTML='<div class="empty-note">질문이 없습니다.</div>'; return; }
+  list.innerHTML='';
+  items.forEach(function(q, i){
+    var badgeMap={'접수됨':'badge-pending','리서치중':'badge-processing','발행됨':'badge-published'};
+    var badgeCls = badgeMap[q.status]||'badge-pending';
     var item = document.createElement('div');
-    item.className = 'qa-admin-item status-' + (q.status||'접수됨');
+    item.className='qa-admin-item status-'+(q.status||'접수됨');
     item.innerHTML =
-      '<div class="qa-admin-title">' + esc(q.title) + '</div>'
-      + '<div class="qa-admin-meta">'
-        + '<b>카테고리:</b> ' + esc(q.category||'—') + ' &nbsp;'
-        + '<b>날짜:</b> ' + esc(q.date||'—') + ' &nbsp;'
-        + '<b>이메일:</b> ' + esc(q.email||'—') + ' &nbsp;'
-        + '<span class="badge ' + badgeCls + '">' + esc(q.status||'접수됨') + '</span>'
-      + '</div>'
-      + '<div class="qa-admin-content">' + esc(q.content||'(내용 없음)') + '</div>'
-      + '<div class="qa-admin-actions">'
-        + (q.status !== '리서치중'  ? '<button class="btn btn-yellow" onclick="setQAStatus(' + origIdx + ',\'리서치중\')">리서치중으로</button>' : '')
-        + (q.status !== '발행됨'    ? '<input type="text" class="qa-url-input" id="url-' + origIdx + '" placeholder="posts/xxx.html (발행됨 처리 시 입력)" value="' + esc(q.post_url||'') + '">'
-                                      + '<button class="btn btn-green" onclick="publishQA(' + origIdx + ')">발행됨으로</button>' : '')
-        + (q.status === '발행됨' && q.post_url ? '<a href="' + esc(q.post_url) + '" target="_blank" class="btn btn-ghost">글 보기 ↗</a>' : '')
-        + '<button class="btn btn-danger" style="margin-left:auto" onclick="deleteQA(' + origIdx + ')">삭제</button>'
-      + '</div>';
+      '<div class="qa-admin-title">'+esc(q.title)+'</div>'
+      +'<div class="qa-admin-meta">'
+        +'<b>카테고리:</b> '+esc(q.category||'—')+' &nbsp;'
+        +'<b>날짜:</b> '+esc(q.date||'—')+' &nbsp;'
+        +'<b>이메일:</b> '+esc(q.email||'—')+' &nbsp;'
+        +'<span class="badge '+badgeCls+'">'+esc(q.status||'접수됨')+'</span>'
+      +'</div>'
+      +'<div class="qa-admin-content">'+esc(q.content||'(내용 없음)')+'</div>'
+      +'<div class="qa-admin-actions">'
+        +(q.status!=='리서치중' ? '<button class="btn btn-yellow" onclick="setQAStatus(\''+q.id+'\',\'리서치중\')">리서치중으로</button>' : '')
+        +(q.status!=='발행됨'   ? '<input type="text" class="qa-url-input" id="url-'+i+'" placeholder="posts/xxx.html" value="'+esc(q.post_url||'')+'">'
+                                 +'<button class="btn btn-green" onclick="publishQA(\''+q.id+'\','+i+')">발행됨으로</button>' : '')
+        +(q.status==='발행됨'&&q.post_url ? '<a href="'+esc(q.post_url)+'" target="_blank" class="btn btn-ghost">글 보기 ↗</a>' : '')
+        +'<button class="btn btn-danger" style="margin-left:auto" onclick="deleteQA(\''+q.id+'\')">삭제</button>'
+      +'</div>';
     list.appendChild(item);
   });
 }
 
-function setQAStatus(idx, status){
-  var items = getQAs();
-  if(!items[idx]) return;
-  items[idx].status = status;
-  saveQAs(items);
-  loadQA();
+async function setQAStatus(id, status){
+  var items = _qaItems.slice();
+  var q = items.find(function(q){ return q.id===id; });
+  if(!q) return;
+  q.status = status;
+  await writeQAFile(items);
+  _qaItems = items; renderQA(_qaItems);
 }
 
-function publishQA(idx){
-  var items = getQAs();
-  if(!items[idx]) return;
-  var urlInput = document.getElementById('url-' + idx);
-  var url = urlInput ? urlInput.value.trim() : '';
-  if(!url){ alert('발행된 글 URL을 입력하세요. (예: posts/japan-02.html)'); return; }
-  items[idx].status = '발행됨';
-  items[idx].post_url = url;
-  saveQAs(items);
-  loadQA();
+async function publishQA(id, i){
+  var url = document.getElementById('url-'+i)?.value.trim();
+  if(!url){ alert('발행된 글 URL을 입력하세요.'); return; }
+  var items = _qaItems.slice();
+  var q = items.find(function(q){ return q.id===id; });
+  if(!q) return;
+  q.status='발행됨'; q.post_url=url;
+  await writeQAFile(items);
+  _qaItems=items; renderQA(_qaItems);
 }
 
-function deleteQA(idx){
+async function deleteQA(id){
   if(!confirm('이 질문을 삭제하시겠습니까?')) return;
-  var items = getQAs();
-  items.splice(idx, 1);
-  saveQAs(items);
-  loadQA();
+  var items = _qaItems.filter(function(q){ return q.id!==id; });
+  await writeQAFile(items);
+  _qaItems=items; renderQA(_qaItems);
 }
 
-function addQA(){
+async function addQA(){
   var title   = document.getElementById('qa-new-title').value.trim();
   var cat     = document.getElementById('qa-new-cat').value;
   var email   = document.getElementById('qa-new-email').value.trim();
   var content = document.getElementById('qa-new-content').value.trim();
   if(!title){ alert('제목을 입력하세요.'); return; }
-  var items = getQAs();
-  var newId = 'q' + String(Date.now()).slice(-6);
-  items.unshift({
-    id: newId,
-    title: title,
-    content: content,
-    category: cat,
-    email: email,
-    status: '접수됨',
-    date: new Date().toISOString().slice(0,10),
-    post_url: ''
-  });
-  saveQAs(items);
+  var items = _qaItems.slice();
+  items.unshift({ id:'q'+Date.now(), title:title, content:content, category:cat, email:email,
+    status:'접수됨', date:new Date().toISOString().slice(0,10), post_url:'' });
+  await writeQAFile(items);
+  _qaItems=items; renderQA(_qaItems);
   document.getElementById('qa-new-title').value='';
   document.getElementById('qa-new-cat').value='';
   document.getElementById('qa-new-email').value='';
   document.getElementById('qa-new-content').value='';
-  loadQA();
 }
 
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -458,7 +438,7 @@ function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 // ── 초기화 ───────────────────────────────────────────────────
 async function init(){
   loadSubs();
-  loadQA();
+  loadQA();  // JSONBin에서 Q&A 로드
   try {
     var h = await loadHandle();
     if(h){
@@ -467,9 +447,7 @@ async function init(){
         dirHandle = h;
         setFsBar(h.name);
         await readSubsFile();
-        await readQAFile();
         loadSubs();
-        loadQA();
       }
     }
   } catch(e){}

@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "q001",
+    "title": "예시: 화웨이 AI 제철소 기술이 포스코 고로 자동화에 주는 시사점은?",
+    "content": "중국 바오스틸의 판구 AI 사례를 보면 고로 자동화가 빠르게 진행되고 있는데, 포스코 관점에서 어떤 대응이 필요할지 궁금합니다.",
+    "category": "중국",
+    "email": "example@posco.com",
+    "status": "발행됨",
+    "date": "2026-06-26",
+    "post_url": "posts/china-tech-01.html"
+  }
+]
