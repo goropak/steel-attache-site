@@ -54,25 +54,48 @@
   display: grid; grid-template-columns: 1fr 80px 90px 90px;
   padding: .85rem 1.25rem; border-bottom: 1px solid var(--c-border);
   align-items: center; transition: background .1s;
+  cursor: pointer; user-select: none;
 }
-.qa-row:last-child { border-bottom: none; }
 .qa-row:hover { background: var(--c-surface); }
-.qa-row.published { cursor: pointer; }
-.qa-row.published:hover .qa-row-title { color: var(--c-accent); }
-.qa-row-title { font-size: .95rem; font-weight: 600; color: var(--c-text); line-height: 1.35; }
+.qa-row:hover .qa-row-title { color: var(--c-accent); }
+.qa-row.open { background: var(--c-surface); }
+.qa-row.open .qa-row-title { color: var(--c-accent); }
+.qa-row-title { font-size: .95rem; font-weight: 600; color: var(--c-text); line-height: 1.35; display: flex; align-items: center; gap: .4rem; }
 .qa-row-title .qa-cat {
   display: inline-block; font-size: .72rem; font-weight: 700;
   background: var(--c-surface); border: 1px solid var(--c-border);
-  border-radius: 4px; padding: .1rem .4rem; margin-right: .4rem;
-  color: var(--c-text-sub); vertical-align: middle;
+  border-radius: 4px; padding: .1rem .4rem;
+  color: var(--c-text-sub); flex-shrink: 0;
 }
+.qa-chevron { font-size: .7rem; color: var(--c-text-sub); transition: transform .2s; flex-shrink: 0; }
+.qa-row.open .qa-chevron { transform: rotate(180deg); }
 .qa-row-cat  { font-size: .82rem; color: var(--c-text-sub); }
 .qa-row-date { font-size: .82rem; color: var(--c-text-sub); }
 .badge { display: inline-flex; align-items: center; padding: .18rem .55rem; border-radius: 4px; font-size: .75rem; font-weight: 600; }
 .badge-pending    { background: #f3f4f6; color: #6b7280; }
 .badge-processing { background: #fef3c7; color: #92400e; }
 .badge-published  { background: #d1fae5; color: #065f46; }
-.qa-link-icon { margin-left: .3rem; font-size: .8rem; }
+/* 아코디언 패널 */
+.qa-detail {
+  display: none; padding: 1rem 1.25rem 1.25rem;
+  border-bottom: 1px solid var(--c-border);
+  background: #0f1820;
+}
+.qa-detail.open { display: block; }
+.qa-detail-content {
+  font-size: .9rem; color: var(--c-text-sub); line-height: 1.75;
+  white-space: pre-wrap; word-break: break-word;
+  border-left: 3px solid var(--c-accent); padding-left: 1rem;
+  margin-bottom: .85rem;
+}
+.qa-detail-meta { font-size: .78rem; color: #5a6a7a; margin-bottom: .75rem; }
+.qa-article-btn {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .45rem 1.1rem; background: var(--c-accent); color: #fff;
+  border-radius: 99px; font-size: .82rem; font-weight: 700;
+  text-decoration: none; transition: opacity .15s;
+}
+.qa-article-btn:hover { opacity: .85; }
 .qa-empty { text-align: center; padding: 3rem; color: var(--c-text-sub); font-size: .95rem; }
 .qa-info { background: #fff8f0; border: 1px solid #f5d9b0; border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: .88rem; color: #7a4a00; line-height: 1.7; }
 @media (max-width: 600px) {
@@ -174,7 +197,7 @@
 
   function renderBoard(items){
     var board = document.getElementById('qa-board');
-    board.querySelectorAll('.qa-row, .qa-empty').forEach(function(r){ r.remove(); });
+    board.querySelectorAll('.qa-row, .qa-detail, .qa-empty').forEach(function(r){ r.remove(); });
     if(!items.length){
       var e = document.createElement('div');
       e.className='qa-empty'; e.textContent='등록된 질문이 없습니다.';
@@ -183,22 +206,45 @@
     items.forEach(function(q){
       var badge = BADGE[q.status] || BADGE['접수됨'];
       var isPub = q.status==='발행됨' && q.post_url;
+
+      // ── 행 ──
       var row = document.createElement('div');
-      row.className = 'qa-row' + (isPub?' published':'');
-      if(isPub){
-        row.setAttribute('role','link'); row.setAttribute('tabindex','0');
-        row.addEventListener('click',function(){ window.location.href=q.post_url; });
-        row.addEventListener('keydown',function(e){ if(e.key==='Enter') window.location.href=q.post_url; });
-      }
+      row.className = 'qa-row';
+      row.setAttribute('role','button'); row.setAttribute('tabindex','0');
       row.innerHTML =
         '<div class="qa-row-title">'
           +(q.category?'<span class="qa-cat">'+esc(q.category)+'</span>':'')
-          +esc(q.title)+(isPub?'<span class="qa-link-icon">↗</span>':'')
+          +'<span>'+esc(q.title)+'</span>'
+          +'<span class="qa-chevron">▼</span>'
         +'</div>'
         +'<div class="qa-row-cat">'+esc(q.category||'')+'</div>'
         +'<div>'+badge+'</div>'
         +'<div class="qa-row-date">'+esc(q.date||'')+'</div>';
+
+      // ── 상세 패널 ──
+      var detail = document.createElement('div');
+      detail.className = 'qa-detail';
+      var metaParts = [];
+      if(q.name) metaParts.push('질문자: '+esc(q.name));
+      metaParts.push('등록일: '+esc(q.date||''));
+      detail.innerHTML =
+        '<div class="qa-detail-meta">'+metaParts.join(' · ')+'</div>'
+        +'<div class="qa-detail-content">'+esc(q.content||'(내용 없음)')+'</div>'
+        +(isPub ? '<a class="qa-article-btn" href="'+esc(q.post_url)+'" target="_blank">📄 발행된 기사 보기 ↗</a>' : '');
+
+      // ── 토글 ──
+      function toggle(){
+        var isOpen = row.classList.contains('open');
+        // 다른 열린 행 닫기
+        board.querySelectorAll('.qa-row.open').forEach(function(r){ r.classList.remove('open'); });
+        board.querySelectorAll('.qa-detail.open').forEach(function(d){ d.classList.remove('open'); });
+        if(!isOpen){ row.classList.add('open'); detail.classList.add('open'); }
+      }
+      row.addEventListener('click', toggle);
+      row.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
+
       board.appendChild(row);
+      board.appendChild(detail);
     });
   }
 
