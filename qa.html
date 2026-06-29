@@ -4,147 +4,283 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Q&amp;A — 철강 주재원</title>
-<meta name="description" content="철강 주재원에게 물어보세요. 해외 철강·제철소 관련 질문 아카이브.">
+<meta name="description" content="해외 철강·제철소 관련 질문을 남겨주세요. 보좌관·연구원·시장이 함께 주재원 글로 발행합니다.">
 <link rel="stylesheet" href="style.css">
 <style>
-.qa-hero{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:2.5rem 0 2rem;}
-.qa-hero h1{font-size:1.75rem;margin:0 0 .5rem;font-family:var(--f-serif,Georgia,serif);}
-.qa-hero p{color:var(--c-muted);margin:0;}
-.qa-ask-btn{display:inline-block;margin:.75rem 0 0;padding:.55rem 1.4rem;background:var(--accent,#D62828);color:#fff;border-radius:99px;font-size:.9rem;font-weight:600;text-decoration:none;letter-spacing:.02em;}
-.qa-ask-btn:hover{opacity:.88;}
-.qa-tabs{display:flex;gap:.5rem;flex-wrap:wrap;padding:1.25rem 0 0;}
-.qa-tab{padding:.35rem .9rem;border-radius:99px;font-size:.85rem;cursor:pointer;
-  background:var(--c-bg);border:1px solid var(--c-border);color:var(--c-ink);}
-.qa-tab.active{background:var(--accent,#D62828);color:#fff;border-color:transparent;}
-.qa-grid{display:grid;gap:1rem;margin-top:1.5rem;}
-.qa-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:8px;
-  padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.5rem;}
-.qa-card.published{cursor:pointer;}
-.qa-card.published:hover{border-color:var(--accent,#D62828);}
-.qa-card-cat{font-size:.78rem;font-weight:600;color:var(--accent,#D62828);
-  text-transform:uppercase;letter-spacing:.04em;}
-.qa-card-q{font-size:1.05rem;font-weight:600;line-height:1.4;color:var(--c-ink);}
-.qa-card-meta{font-size:.82rem;color:var(--c-muted);display:flex;gap:.75rem;align-items:center;}
-.badge{display:inline-flex;align-items:center;gap:.25rem;padding:.15rem .5rem;
-  border-radius:4px;font-size:.75rem;font-weight:600;}
-.badge-pending{background:#f3f4f6;color:#6b7280;}
-.badge-processing{background:#fef3c7;color:#92400e;}
-.badge-draft{background:#dbeafe;color:#1e40af;}
-.badge-published{background:#d1fae5;color:#065f46;}
-.qa-empty{text-align:center;color:var(--c-muted);padding:3rem;font-size:.95rem;}
-@media(max-width:600px){
-  .qa-hero{padding:1.5rem 0 1rem;}
-  .qa-hero h1{font-size:1.4rem;}
+/* ── Q&A 헤더 ── */
+.qa-head { background: var(--steel); border-bottom: 3px solid var(--c-accent); padding: 2.5rem 0 2rem; }
+.qa-head h1 { font-family: var(--font-head); font-size: 1.75rem; color: #fff; margin: 0 0 .4rem; }
+.qa-head p  { color: #aeb8c2; font-size: .92rem; margin: 0 0 1.25rem; }
+
+/* ── 질문 등록 폼 ── */
+.qa-form-box { background: #1e2a38; border: 1px solid #3a4654; border-radius: 10px; padding: 1.5rem; margin-top: 1.25rem; }
+.qa-form-box h3 { color: #fff; font-size: 1rem; margin: 0 0 1rem; }
+.qa-form-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .6rem; }
+.qa-form-box input,
+.qa-form-box textarea,
+.qa-form-box select {
+  background: #11161d; border: 1.5px solid #3a4654; color: #fff;
+  border-radius: 6px; padding: .55rem .85rem; font-size: .9rem;
+  font-family: var(--font-body); width: 100%; box-sizing: border-box;
+}
+.qa-form-box input::placeholder,
+.qa-form-box textarea::placeholder { color: #6b7a8a; }
+.qa-form-box input:focus,
+.qa-form-box textarea:focus,
+.qa-form-box select:focus { outline: none; border-color: var(--c-accent); }
+.qa-form-box textarea { resize: vertical; min-height: 90px; }
+.qa-form-box select option { background: #11161d; }
+.qa-submit-btn {
+  padding: 11px 28px; background: var(--c-accent); color: #fff;
+  border: none; border-radius: 99px; font-size: .9rem; font-weight: 700;
+  cursor: pointer; font-family: var(--font-body); margin-top: .5rem;
+}
+.qa-submit-btn:hover { opacity: .88; }
+.qa-form-note { color: #6b7a8a; font-size: .78rem; margin-top: .75rem; }
+
+/* ── 탭 필터 ── */
+.qa-filter { display: flex; gap: .4rem; flex-wrap: wrap; padding: 1.25rem 0 0; }
+.qa-filter button {
+  padding: .3rem .85rem; border-radius: 99px; font-size: .82rem;
+  cursor: pointer; background: transparent;
+  border: 1px solid var(--c-border); color: var(--c-text-sub);
+  font-family: var(--font-body);
+}
+.qa-filter button.active { background: var(--c-accent); color: #fff; border-color: transparent; }
+
+/* ── 게시판 목록 ── */
+.qa-board { margin-top: 1.25rem; border: 1px solid var(--c-border); border-radius: 10px; overflow: hidden; }
+.qa-board-head {
+  display: grid; grid-template-columns: 1fr 80px 90px 90px;
+  padding: .6rem 1.25rem; background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  font-size: .78rem; font-weight: 700; color: var(--c-text-sub);
+}
+.qa-row {
+  display: grid; grid-template-columns: 1fr 80px 90px 90px;
+  padding: .85rem 1.25rem; border-bottom: 1px solid var(--c-border);
+  align-items: center; transition: background .1s;
+}
+.qa-row:last-child { border-bottom: none; }
+.qa-row:hover { background: var(--c-surface); }
+.qa-row.published { cursor: pointer; }
+.qa-row.published:hover .qa-row-title { color: var(--c-accent); }
+.qa-row-title { font-size: .95rem; font-weight: 600; color: var(--c-text); line-height: 1.35; }
+.qa-row-title .qa-cat {
+  display: inline-block; font-size: .72rem; font-weight: 700;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: 4px; padding: .1rem .4rem; margin-right: .4rem;
+  color: var(--c-text-sub); vertical-align: middle;
+}
+.qa-row-cat  { font-size: .82rem; color: var(--c-text-sub); }
+.qa-row-date { font-size: .82rem; color: var(--c-text-sub); }
+.badge { display: inline-flex; align-items: center; gap: .25rem; padding: .18rem .55rem; border-radius: 4px; font-size: .75rem; font-weight: 600; }
+.badge-pending    { background: #f3f4f6; color: #6b7280; }
+.badge-processing { background: #fef3c7; color: #92400e; }
+.badge-published  { background: #d1fae5; color: #065f46; }
+.qa-link-icon { margin-left: .3rem; font-size: .8rem; }
+
+.qa-empty { text-align: center; padding: 3rem; color: var(--c-text-sub); font-size: .95rem; }
+
+/* ── 안내 배너 ── */
+.qa-info { background: #fff8f0; border: 1px solid #f5d9b0; border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: .88rem; color: #7a4a00; line-height: 1.7; }
+
+@media (max-width: 600px) {
+  .qa-board-head, .qa-row { grid-template-columns: 1fr 70px; }
+  .qa-row-cat, .qa-board-head .col-cat { display: none; }
+  .qa-row-date, .qa-board-head .col-date { display: none; }
 }
 </style>
 </head>
 <body>
+
 <header class="masthead"><div class="wrap">
   <div class="mh-brand">
-    <svg class="mh-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="9" fill="#11161d" stroke="#3a4654"/><path d="M20 8 L31 30 H9 Z" fill="none" stroke="#D62828" stroke-width="2.4" stroke-linejoin="round"/><path d="M20 20 L26 30 H14 Z" fill="#D62828"/><circle cx="20" cy="26.5" r="1.7" fill="#ffd9a8"/></svg>
+    <svg class="mh-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="1" y="1" width="38" height="38" rx="9" fill="#11161d" stroke="#3a4654"/>
+      <path d="M20 8 L31 30 H9 Z" fill="none" stroke="#D62828" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M20 20 L26 30 H14 Z" fill="#D62828"/>
+      <circle cx="20" cy="26.5" r="1.7" fill="#ffd9a8"/>
+    </svg>
     <div class="mh-title"><a href="index.html">철강 주재원</a><span class="sub">Steel Attaché</span></div>
   </div>
   <nav class="mh-nav"><a href="index.html">홈</a><a href="qa.html" aria-current="page">Q&amp;A</a></nav>
 </div></header>
 
-<section class="qa-hero">
+<!-- 헤더 + 질문 폼 -->
+<section class="qa-head">
   <div class="wrap">
-    <h1>Q&amp;A 아카이브</h1>
-    <p>해외 철강·제철소·무역 관련 궁금한 점을 질문해 주세요. 검토 후 답변을 게시합니다.</p>
-    <a class="qa-ask-btn"
-       href="mailto:csband8@gmail.com?subject=%5B질문%5D%20철강%20주재원&body=질문%3A%0A%0A(궁금한%20내용을%20자유롭게%20적어주세요)"
-       >✉ 질문하기</a>
-    <div class="qa-tabs" id="tabs">
-      <button class="qa-tab active" data-cat="">전체</button>
+    <h1>독자 Q&amp;A</h1>
+    <p>해외 철강·제철소·무역 관련 질문을 남겨주세요.<br>검토 후 보좌관·연구원·시장이 함께 주재원 글로 발행합니다.</p>
+
+    <div class="qa-form-box">
+      <h3>✏ 질문 등록</h3>
+      <form id="qa-form" action="https://formspree.io/f/xqevbyrq" method="POST">
+        <input type="hidden" name="_subject" value="[철강 주재원] 새 Q&A 질문">
+        <input type="hidden" name="type" value="question">
+        <div class="qa-form-row">
+          <input type="text" name="title" placeholder="질문 제목 (한 줄 요약)" required style="flex:2">
+          <select name="category" style="flex:1;min-width:110px">
+            <option value="">카테고리</option>
+            <option value="중국">중국</option>
+            <option value="일본">일본</option>
+            <option value="미국">미국</option>
+            <option value="유럽">유럽</option>
+            <option value="인도">인도</option>
+            <option value="포스코·현대제철">포스코·현대제철</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+        <textarea name="content" placeholder="질문 내용을 자유롭게 적어주세요." required></textarea>
+        <div class="qa-form-row" style="margin-top:.6rem">
+          <input type="email" name="email" placeholder="이메일 (답변 알림용, 비공개)" required>
+          <input type="text" name="name" placeholder="이름 또는 닉네임 (선택)">
+        </div>
+        <button type="submit" class="qa-submit-btn">질문 등록</button>
+      </form>
+      <p class="qa-form-note">이메일은 공개되지 않으며 발행 알림 용도로만 사용됩니다. 검토 후 목록에 등재됩니다.</p>
     </div>
   </div>
 </section>
 
+<!-- 게시판 -->
 <main>
-  <div class="wrap">
-    <div class="qa-grid" id="qa-grid">
-      <div class="qa-empty">불러오는 중…</div>
+  <div class="wrap" style="padding-top:2rem;padding-bottom:3rem;">
+
+    <div class="qa-info">
+      📌 질문은 검토 후 목록에 등재됩니다. <strong>발행됨</strong> 상태가 되면 주재원 글로 답변이 발행된 것입니다.
     </div>
+
+    <!-- 카테고리 필터 -->
+    <div class="qa-filter" id="qa-filter">
+      <button class="active" data-cat="">전체</button>
+    </div>
+
+    <!-- 게시판 -->
+    <div class="qa-board" id="qa-board">
+      <div class="qa-board-head">
+        <span>질문 제목</span>
+        <span class="col-cat">카테고리</span>
+        <span>상태</span>
+        <span class="col-date">등록일</span>
+      </div>
+      <div class="qa-empty" id="qa-loading">불러오는 중…</div>
+    </div>
+
   </div>
 </main>
 
 <footer class="foot"><div class="wrap">
   <div class="b">철강 주재원</div>
-  <div class="s">포스코의 눈으로 읽는 세계 철강 분석 · 공개 자료 기반, 출처 명기</div>
+  <div class="s">포스코의 눈으로 읽는 세계 철강 분석 · © 2026 · 공개 자료 기반, 출처 명기</div>
 </div></footer>
 
 <script>
 (function(){
   var BADGE = {
-    pending:    '<span class="badge badge-pending">조사 대기</span>',
-    processing: '<span class="badge badge-processing">조사 중</span>',
-    draft:      '<span class="badge badge-draft">검토 중</span>',
-    published:  '<span class="badge badge-published">게시됨</span>'
+    '접수됨':    '<span class="badge badge-pending">접수됨</span>',
+    '리서치중':  '<span class="badge badge-processing">리서치 중</span>',
+    '발행됨':    '<span class="badge badge-published">발행됨 →</span>'
   };
 
   var allItems = [];
   var activeTab = '';
 
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  function renderGrid(items){
-    var grid = document.getElementById('qa-grid');
+  function renderBoard(items){
+    var board = document.getElementById('qa-board');
+
+    board.querySelectorAll('.qa-row').forEach(function(r){ r.remove(); });
+    var loading = document.getElementById('qa-loading');
+    if(loading) loading.remove();
+
     if(!items.length){
-      grid.innerHTML = '<div class="qa-empty">질문이 없습니다.</div>';
+      var empty = document.createElement('div');
+      empty.className = 'qa-empty';
+      empty.textContent = '등록된 질문이 없습니다.';
+      board.appendChild(empty);
       return;
     }
-    grid.innerHTML = items.map(function(q){
-      var badge = BADGE[q.status] || BADGE.pending;
-      var isPublished = q.status === 'published' && q.url;
-      var card = '<div class="qa-card' + (isPublished ? ' published' : '') + '"'
-        + (isPublished ? ' role="link" tabindex="0" data-href="' + esc(q.url) + '" onclick="goCard(this)" onkeydown="keyCard(event,this)"' : '')
-        + '>'
-        + '<div class="qa-card-cat">' + esc(q.category) + '</div>'
-        + '<div class="qa-card-q">' + esc(q.question) + '</div>'
-        + '<div class="qa-card-meta">' + badge + '<span>' + esc(q.created) + '</span></div>'
-        + '</div>';
-      return card;
-    }).join('');
+
+    items.forEach(function(q){
+      var badge = BADGE[q.status] || BADGE['접수됨'];
+      var isPublished = q.status === '발행됨' && q.post_url;
+      var row = document.createElement('div');
+      row.className = 'qa-row' + (isPublished ? ' published' : '');
+      if(isPublished){
+        row.setAttribute('role','link');
+        row.setAttribute('tabindex','0');
+        row.dataset.href = q.post_url;
+        row.addEventListener('click', function(){ window.location.href = q.post_url; });
+        row.addEventListener('keydown', function(e){ if(e.key==='Enter') window.location.href = q.post_url; });
+      }
+      row.innerHTML =
+        '<div class="qa-row-title">'
+          + (q.category ? '<span class="qa-cat">' + esc(q.category) + '</span>' : '')
+          + esc(q.title)
+          + (isPublished ? '<span class="qa-link-icon">↗</span>' : '')
+        + '</div>'
+        + '<div class="qa-row-cat">' + esc(q.category||'') + '</div>'
+        + '<div>' + badge + '</div>'
+        + '<div class="qa-row-date">' + esc(q.date||'') + '</div>';
+      board.appendChild(row);
+    });
   }
 
-  function buildTabs(items){
+  function buildFilter(items){
     var cats = [];
     items.forEach(function(q){ if(q.category && cats.indexOf(q.category)<0) cats.push(q.category); });
-    var tabsEl = document.getElementById('tabs');
+    var filter = document.getElementById('qa-filter');
     cats.forEach(function(c){
       var btn = document.createElement('button');
-      btn.className = 'qa-tab';
       btn.dataset.cat = c;
       btn.textContent = c;
-      btn.addEventListener('click', onTab);
-      tabsEl.appendChild(btn);
+      btn.addEventListener('click', onFilter);
+      filter.appendChild(btn);
     });
   }
 
-  function onTab(e){
-    activeTab = e.target.dataset.cat;
-    document.querySelectorAll('.qa-tab').forEach(function(t){
-      t.classList.toggle('active', t.dataset.cat === activeTab);
+  function onFilter(e){
+    activeTab = e.target.dataset.cat || '';
+    document.querySelectorAll('.qa-filter button').forEach(function(b){
+      b.classList.toggle('active', (b.dataset.cat||'') === activeTab);
     });
     var filtered = activeTab ? allItems.filter(function(q){ return q.category === activeTab; }) : allItems;
-    renderGrid(filtered);
+    renderBoard(filtered);
   }
 
-  document.querySelectorAll('.qa-tab').forEach(function(t){ t.addEventListener('click', onTab); });
+  document.querySelectorAll('.qa-filter button').forEach(function(b){
+    b.addEventListener('click', onFilter);
+  });
 
-  window.goCard = function(el){ window.location.href = el.dataset.href; };
-  window.keyCard = function(ev, el){ if(ev.key==='Enter'||ev.key===' ') window.location.href = el.dataset.href; };
+  /* 폼 비동기 제출 */
+  var form = document.getElementById('qa-form');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var data = new FormData(form);
+    fetch(form.action, { method:'POST', body:data, headers:{ Accept:'application/json' } })
+      .then(function(r){
+        if(r.ok){
+          form.innerHTML = '<p style="color:#d1fae5;font-weight:600;padding:.5rem 0;">✓ 질문이 등록됐습니다. 검토 후 목록에 올라갑니다. 감사합니다!</p>';
+        } else {
+          alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+        }
+      })
+      .catch(function(){ alert('네트워크 오류입니다.'); });
+  });
 
+  /* questions.json 로드 */
   fetch('data/questions.json?v=' + Date.now())
     .then(function(r){ return r.json(); })
     .then(function(data){
-      allItems = data.slice().sort(function(a,b){ return b.created > a.created ? 1 : -1; });
-      buildTabs(allItems);
-      renderGrid(allItems);
+      allItems = data.slice().sort(function(a,b){ return (b.date||'') > (a.date||'') ? 1 : -1; });
+      buildFilter(allItems);
+      renderBoard(allItems);
     })
     .catch(function(){
-      document.getElementById('qa-grid').innerHTML =
-        '<div class="qa-empty">질문 데이터를 불러오지 못했습니다.</div>';
+      var loading = document.getElementById('qa-loading');
+      if(loading){ loading.textContent = '질문 목록을 불러오지 못했습니다.'; }
     });
 })();
 </script>

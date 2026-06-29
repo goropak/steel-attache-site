@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <style>
 body{background:var(--c-bg,#f5f3ee);}
-.admin-wrap{max-width:680px;margin:0 auto;padding:2rem 1.5rem;}
+.admin-wrap{max-width:780px;margin:0 auto;padding:2rem 1.5rem;}
 .admin-section{background:var(--c-surface,#fff);border:1px solid var(--c-border,#e6e0d4);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;}
 .admin-section h2{font-size:1rem;font-weight:700;margin:0 0 1rem;color:var(--c-ink,#11161d);}
 .input-row{display:flex;gap:.5rem;margin-bottom:.75rem;}
@@ -20,6 +20,7 @@ body{background:var(--c-bg,#f5f3ee);}
 .btn-danger{background:#fee2e2;color:#991b1b;}
 .btn-danger:hover{background:#fca5a5;}
 .btn-green{background:#d1fae5;color:#065f46;}
+.btn-yellow{background:#fef3c7;color:#92400e;}
 .sub-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.4rem;}
 .sub-item{display:flex;align-items:center;justify-content:space-between;padding:.5rem .75rem;background:var(--c-bg,#f5f3ee);border-radius:6px;font-size:.88rem;}
 .sub-item span{color:var(--c-muted,#6b6459);font-size:.78rem;margin-left:.5rem;}
@@ -40,6 +41,28 @@ body{background:var(--c-bg,#f5f3ee);}
 .gate-box h2{margin:0 0 1.25rem;font-size:1.1rem;}
 .gate-box input{width:100%;padding:.55rem .75rem;border:1px solid var(--c-border,#e6e0d4);border-radius:6px;font-size:1rem;margin-bottom:.75rem;box-sizing:border-box;}
 .gate-error{color:#D62828;font-size:.85rem;margin-top:.5rem;display:none;}
+/* ── 탭 ── */
+.admin-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:2px solid var(--c-border,#e6e0d4);}
+.admin-tab{padding:.55rem 1.25rem;background:transparent;border:none;font-size:.92rem;font-weight:600;cursor:pointer;color:var(--c-muted,#6b6459);font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-2px;}
+.admin-tab.active{color:var(--accent,#D62828);border-bottom-color:var(--accent,#D62828);}
+.admin-tab-panel{display:none;}
+.admin-tab-panel.active{display:block;}
+/* ── Q&A 패널 ── */
+.qa-admin-list{display:flex;flex-direction:column;gap:.75rem;}
+.qa-admin-item{background:var(--c-bg,#f5f3ee);border:1px solid var(--c-border,#e6e0d4);border-radius:8px;padding:1rem 1.1rem;}
+.qa-admin-item.status-발행됨{border-left:3px solid #10b981;}
+.qa-admin-item.status-리서치중{border-left:3px solid #f59e0b;}
+.qa-admin-item.status-접수됨{border-left:3px solid #9ca3af;}
+.qa-admin-title{font-weight:700;font-size:.95rem;margin-bottom:.3rem;color:var(--c-ink,#11161d);}
+.qa-admin-meta{font-size:.78rem;color:var(--c-muted,#6b6459);margin-bottom:.6rem;}
+.qa-admin-meta b{color:var(--c-ink,#11161d);}
+.qa-admin-content{font-size:.88rem;color:#444;line-height:1.65;background:#fff;border-radius:6px;padding:.65rem .85rem;margin-bottom:.75rem;border:1px solid var(--c-border,#e6e0d4);}
+.qa-admin-actions{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;}
+.qa-url-input{flex:1;min-width:200px;padding:.4rem .7rem;border:1px solid var(--c-border,#e6e0d4);border-radius:6px;font-size:.85rem;font-family:inherit;}
+.badge{display:inline-flex;align-items:center;padding:.18rem .55rem;border-radius:4px;font-size:.75rem;font-weight:600;}
+.badge-pending{background:#f3f4f6;color:#6b7280;}
+.badge-processing{background:#fef3c7;color:#92400e;}
+.badge-published{background:#d1fae5;color:#065f46;}
 </style>
 </head>
 <body>
@@ -70,36 +93,90 @@ body{background:var(--c-bg,#f5f3ee);}
     <h2>로컬 파일 연결</h2>
     <div class="fs-bar disconnected" id="fs-bar">
       <div class="fs-dot"></div>
-      <span id="fs-label">연결 안 됨 — 구독자가 브라우저에만 저장됩니다</span>
+      <span id="fs-label">연결 안 됨 — 변경 사항이 파일에 저장되지 않습니다</span>
     </div>
     <div style="display:flex;gap:.5rem;align-items:center;">
       <button class="btn btn-primary" onclick="connectFolder()">📁 site/data 폴더 연결</button>
-      <span style="font-size:.82rem;color:var(--c-muted,#6b6459);">연결하면 추가/삭제 시 자동으로 파일에 저장됩니다</span>
+      <span style="font-size:.82rem;color:var(--c-muted,#6b6459);">연결하면 구독자·Q&A 변경 시 자동으로 파일에 저장됩니다</span>
     </div>
   </div>
 
-  <!-- 구독자 관리 -->
-  <div class="admin-section">
-    <div class="stats">
-      <div class="stat-box"><div class="num" id="stat-total">0</div><div class="lbl">구독자</div></div>
-      <div class="stat-box"><div class="num" id="stat-posco">0</div><div class="lbl">posco.com</div></div>
-    </div>
-
-    <h2>구독자 추가</h2>
-    <div class="input-row">
-      <input type="email" id="new-email" placeholder="name@posco.com" onkeydown="if(event.key==='Enter')addSub()">
-      <input type="text" id="new-name" placeholder="이름 (선택)" style="max-width:120px" onkeydown="if(event.key==='Enter')addSub()">
-      <button class="btn btn-primary" onclick="addSub()">추가</button>
-    </div>
-
-    <h2>구독자 목록</h2>
-    <ul class="sub-list" id="sub-list"><li class="empty-note">구독자가 없습니다.</li></ul>
+  <!-- 탭 -->
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchTab('subscribers',this)">구독자 관리</button>
+    <button class="admin-tab" onclick="switchTab('qa',this)">Q&amp;A 관리</button>
   </div>
 
-  <!-- 위험 영역 -->
-  <div class="admin-section">
-    <h2>위험 영역</h2>
-    <button class="btn btn-danger" onclick="clearAll()">전체 구독자 삭제</button>
+  <!-- ── 구독자 탭 ── -->
+  <div class="admin-tab-panel active" id="panel-subscribers">
+
+    <div class="admin-section">
+      <div class="stats">
+        <div class="stat-box"><div class="num" id="stat-total">0</div><div class="lbl">구독자</div></div>
+        <div class="stat-box"><div class="num" id="stat-posco">0</div><div class="lbl">posco.com</div></div>
+      </div>
+
+      <h2>구독자 추가</h2>
+      <div class="input-row">
+        <input type="email" id="new-email" placeholder="name@posco.com" onkeydown="if(event.key==='Enter')addSub()">
+        <input type="text" id="new-name" placeholder="이름 (선택)" style="max-width:120px" onkeydown="if(event.key==='Enter')addSub()">
+        <button class="btn btn-primary" onclick="addSub()">추가</button>
+      </div>
+
+      <h2>구독자 목록</h2>
+      <ul class="sub-list" id="sub-list"><li class="empty-note">구독자가 없습니다.</li></ul>
+    </div>
+
+    <div class="admin-section">
+      <h2>위험 영역</h2>
+      <button class="btn btn-danger" onclick="clearAll()">전체 구독자 삭제</button>
+    </div>
+
+  </div>
+
+  <!-- ── Q&A 탭 ── -->
+  <div class="admin-tab-panel" id="panel-qa">
+
+    <div class="admin-section">
+      <div class="stats">
+        <div class="stat-box"><div class="num" id="qa-stat-total">0</div><div class="lbl">전체</div></div>
+        <div class="stat-box"><div class="num" id="qa-stat-pending">0</div><div class="lbl">접수됨</div></div>
+        <div class="stat-box"><div class="num" id="qa-stat-processing">0</div><div class="lbl">리서치중</div></div>
+        <div class="stat-box"><div class="num" id="qa-stat-published">0</div><div class="lbl">발행됨</div></div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <h2 style="margin:0">질문 목록</h2>
+        <button class="btn btn-ghost" onclick="reloadQA()">↻ 새로고침</button>
+      </div>
+
+      <div class="qa-admin-list" id="qa-admin-list">
+        <div class="empty-note">폴더를 연결한 후 확인하세요.</div>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h2>새 질문 직접 추가 (수동)</h2>
+      <div style="display:flex;flex-direction:column;gap:.5rem;">
+        <input type="text" id="qa-new-title" placeholder="질문 제목" style="padding:.5rem .75rem;border:1px solid var(--c-border,#e6e0d4);border-radius:6px;font-size:.9rem;font-family:inherit;">
+        <div style="display:flex;gap:.5rem;">
+          <select id="qa-new-cat" style="padding:.5rem .75rem;border:1px solid var(--c-border,#e6e0d4);border-radius:6px;font-size:.9rem;font-family:inherit;flex:1;">
+            <option value="">카테고리</option>
+            <option value="중국">중국</option>
+            <option value="일본">일본</option>
+            <option value="미국">미국</option>
+            <option value="유럽">유럽</option>
+            <option value="인도">인도</option>
+            <option value="포스코·현대제철">포스코·현대제철</option>
+            <option value="기타">기타</option>
+          </select>
+          <input type="email" id="qa-new-email" placeholder="이메일 (선택)" style="flex:2;padding:.5rem .75rem;border:1px solid var(--c-border,#e6e0d4);border-radius:6px;font-size:.9rem;font-family:inherit;">
+        </div>
+        <textarea id="qa-new-content" placeholder="질문 내용" style="padding:.5rem .75rem;border:1px solid var(--c-border,#e6e0d4);border-radius:6px;font-size:.9rem;font-family:inherit;min-height:80px;resize:vertical;"></textarea>
+        <button class="btn btn-primary" style="align-self:flex-start" onclick="addQA()">질문 추가</button>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -126,13 +203,22 @@ function checkPw(){
   }
 })();
 
+// ── 탭 전환 ─────────────────────────────────────────────────
+function switchTab(name, btn){
+  document.querySelectorAll('.admin-tab').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.admin-tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
 // ── 상태 ────────────────────────────────────────────────────
 var KEY = 'sa_subscribers';
-var dirHandle = null;  // FileSystemDirectoryHandle
+var QA_KEY = 'sa_questions';
+var dirHandle = null;
 var DB_NAME   = 'sa_admin_db';
 var DB_STORE  = 'handles';
 
-// ── IndexedDB — 폴더 핸들 저장/복원 ─────────────────────────
+// ── IndexedDB ────────────────────────────────────────────────
 function openDB(){
   return new Promise(function(res, rej){
     var req = indexedDB.open(DB_NAME, 1);
@@ -163,36 +249,40 @@ function loadHandle(){
 
 // ── 폴더 연결 ────────────────────────────────────────────────
 async function connectFolder(){
-  if(!window.showDirectoryPicker){
-    alert('이 기능은 Chrome/Edge에서만 지원됩니다.');
-    return;
-  }
+  if(!window.showDirectoryPicker){ alert('Chrome/Edge에서만 지원됩니다.'); return; }
   try {
     var h = await window.showDirectoryPicker({mode:'readwrite'});
     dirHandle = h;
     await saveHandle(h);
     setFsBar(h.name);
-    await readFileIntoStore();  // 파일 → localStorage 동기화
+    await readSubsFile();
+    await readQAFile();
     loadSubs();
+    loadQA();
   } catch(e){
     if(e.name !== 'AbortError') alert('폴더 연결 실패: ' + e.message);
   }
 }
 
-// ── subscribers.json 파일 → localStorage 읽기 ─────────────────
-async function readFileIntoStore(){
+// ── 파일 읽기 ────────────────────────────────────────────────
+async function readSubsFile(){
   if(!dirHandle) return;
   try {
-    var fh = await dirHandle.getFileHandle('subscribers.json', {create:false});
-    var file = await fh.getFile();
-    var text = await file.text();
-    var arr  = JSON.parse(text);
-    if(Array.isArray(arr) && arr.length > 0){
-      localStorage.setItem(KEY, JSON.stringify(arr, null, 2));
-    }
-  } catch(e){
-    // 파일 없으면 무시 (새로 생성될 예정)
-  }
+    var fh = await dirHandle.getFileHandle('subscribers.json',{create:false});
+    var text = await (await fh.getFile()).text();
+    var arr = JSON.parse(text);
+    if(Array.isArray(arr) && arr.length > 0) localStorage.setItem(KEY, JSON.stringify(arr,null,2));
+  } catch(e){}
+}
+
+async function readQAFile(){
+  if(!dirHandle) return;
+  try {
+    var fh = await dirHandle.getFileHandle('questions.json',{create:false});
+    var text = await (await fh.getFile()).text();
+    var arr = JSON.parse(text);
+    if(Array.isArray(arr)) localStorage.setItem(QA_KEY, JSON.stringify(arr,null,2));
+  } catch(e){}
 }
 
 function setFsBar(name){
@@ -201,42 +291,38 @@ function setFsBar(name){
   document.getElementById('fs-label').textContent = '연결됨: ' + name + ' — 변경 시 자동 저장';
 }
 
-// ── subscribers.json 파일 쓰기 ───────────────────────────────
-async function writeFile(){
+// ── 파일 쓰기 ────────────────────────────────────────────────
+async function writeSubsFile(){
   if(!dirHandle) return;
   try {
     var fh = await dirHandle.getFileHandle('subscribers.json',{create:true});
     var w  = await fh.createWritable();
-    await w.write(JSON.stringify(getSubs(), null, 2));
+    await w.write(JSON.stringify(getSubs(),null,2));
     await w.close();
-  } catch(e){
-    if(e.name === 'NotAllowedError'){
-      // 권한 재요청
-      await dirHandle.requestPermission({mode:'readwrite'});
-      await writeFile();
-    } else {
-      console.error('파일 쓰기 실패:', e);
-    }
-  }
+  } catch(e){ if(e.name==='NotAllowedError'){ await dirHandle.requestPermission({mode:'readwrite'}); await writeSubsFile(); } }
+}
+
+async function writeQAFile(){
+  if(!dirHandle) return;
+  try {
+    var fh = await dirHandle.getFileHandle('questions.json',{create:true});
+    var w  = await fh.createWritable();
+    await w.write(JSON.stringify(getQAs(),null,2));
+    await w.close();
+  } catch(e){ if(e.name==='NotAllowedError'){ await dirHandle.requestPermission({mode:'readwrite'}); await writeQAFile(); } }
 }
 
 // ── 구독자 관리 ──────────────────────────────────────────────
 function getSubs(){ try{ return JSON.parse(localStorage.getItem(KEY)||'[]'); }catch(e){ return []; } }
-function saveSubs(arr){
-  localStorage.setItem(KEY, JSON.stringify(arr, null, 2));
-  writeFile();  // 자동 파일 저장
-}
+function saveSubs(arr){ localStorage.setItem(KEY,JSON.stringify(arr,null,2)); writeSubsFile(); }
 
 function loadSubs(){
   var subs = getSubs();
   document.getElementById('stat-total').textContent = subs.length;
   document.getElementById('stat-posco').textContent = subs.filter(function(s){ return s.email.endsWith('@posco.com'); }).length;
   var list = document.getElementById('sub-list');
-  if(!subs.length){
-    list.innerHTML = '<li class="empty-note">구독자가 없습니다.</li>';
-    return;
-  }
-  list.innerHTML = subs.map(function(s, i){
+  if(!subs.length){ list.innerHTML = '<li class="empty-note">구독자가 없습니다.</li>'; return; }
+  list.innerHTML = subs.map(function(s,i){
     return '<li class="sub-item">'
       + '<div>' + esc(s.email) + (s.name ? '<span>' + esc(s.name) + '</span>' : '') + '</div>'
       + '<button class="btn btn-danger" style="padding:.25rem .6rem;font-size:.78rem" onclick="removeSub('+i+')">삭제</button>'
@@ -257,21 +343,122 @@ function addSub(){
   loadSubs();
 }
 
-function removeSub(i){
-  var subs = getSubs(); subs.splice(i,1); saveSubs(subs); loadSubs();
+function removeSub(i){ var subs=getSubs(); subs.splice(i,1); saveSubs(subs); loadSubs(); }
+function clearAll(){ if(!confirm('전체 구독자를 삭제?')) return; saveSubs([]); loadSubs(); }
+
+// ── Q&A 관리 ─────────────────────────────────────────────────
+function getQAs(){ try{ return JSON.parse(localStorage.getItem(QA_KEY)||'[]'); }catch(e){ return []; } }
+function saveQAs(arr){ localStorage.setItem(QA_KEY,JSON.stringify(arr,null,2)); writeQAFile(); }
+
+function reloadQA(){ readQAFile().then(loadQA); }
+
+function loadQA(){
+  var items = getQAs();
+  var total = items.length;
+  var pending = items.filter(function(q){ return q.status==='접수됨'; }).length;
+  var proc    = items.filter(function(q){ return q.status==='리서치중'; }).length;
+  var pub     = items.filter(function(q){ return q.status==='발행됨'; }).length;
+  document.getElementById('qa-stat-total').textContent = total;
+  document.getElementById('qa-stat-pending').textContent = pending;
+  document.getElementById('qa-stat-processing').textContent = proc;
+  document.getElementById('qa-stat-published').textContent = pub;
+
+  var list = document.getElementById('qa-admin-list');
+  if(!total){ list.innerHTML = '<div class="empty-note">질문이 없습니다.</div>'; return; }
+
+  // 최신순
+  var sorted = items.slice().sort(function(a,b){ return (b.date||'') > (a.date||'') ? 1:-1; });
+
+  list.innerHTML = '';
+  sorted.forEach(function(q, si){
+    // 원본 인덱스 찾기
+    var origIdx = items.indexOf(q);
+
+    var badgeMap = { '접수됨':'badge-pending', '리서치중':'badge-processing', '발행됨':'badge-published' };
+    var badgeCls = badgeMap[q.status] || 'badge-pending';
+
+    var item = document.createElement('div');
+    item.className = 'qa-admin-item status-' + (q.status||'접수됨');
+    item.innerHTML =
+      '<div class="qa-admin-title">' + esc(q.title) + '</div>'
+      + '<div class="qa-admin-meta">'
+        + '<b>카테고리:</b> ' + esc(q.category||'—') + ' &nbsp;'
+        + '<b>날짜:</b> ' + esc(q.date||'—') + ' &nbsp;'
+        + '<b>이메일:</b> ' + esc(q.email||'—') + ' &nbsp;'
+        + '<span class="badge ' + badgeCls + '">' + esc(q.status||'접수됨') + '</span>'
+      + '</div>'
+      + '<div class="qa-admin-content">' + esc(q.content||'(내용 없음)') + '</div>'
+      + '<div class="qa-admin-actions">'
+        + (q.status !== '리서치중'  ? '<button class="btn btn-yellow" onclick="setQAStatus(' + origIdx + ',\'리서치중\')">리서치중으로</button>' : '')
+        + (q.status !== '발행됨'    ? '<input type="text" class="qa-url-input" id="url-' + origIdx + '" placeholder="posts/xxx.html (발행됨 처리 시 입력)" value="' + esc(q.post_url||'') + '">'
+                                      + '<button class="btn btn-green" onclick="publishQA(' + origIdx + ')">발행됨으로</button>' : '')
+        + (q.status === '발행됨' && q.post_url ? '<a href="' + esc(q.post_url) + '" target="_blank" class="btn btn-ghost">글 보기 ↗</a>' : '')
+        + '<button class="btn btn-danger" style="margin-left:auto" onclick="deleteQA(' + origIdx + ')">삭제</button>'
+      + '</div>';
+    list.appendChild(item);
+  });
 }
 
-function clearAll(){
-  if(!confirm('전체 구독자를 삭제하시겠습니까?')) return;
-  saveSubs([]); loadSubs();
+function setQAStatus(idx, status){
+  var items = getQAs();
+  if(!items[idx]) return;
+  items[idx].status = status;
+  saveQAs(items);
+  loadQA();
 }
 
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function publishQA(idx){
+  var items = getQAs();
+  if(!items[idx]) return;
+  var urlInput = document.getElementById('url-' + idx);
+  var url = urlInput ? urlInput.value.trim() : '';
+  if(!url){ alert('발행된 글 URL을 입력하세요. (예: posts/japan-02.html)'); return; }
+  items[idx].status = '발행됨';
+  items[idx].post_url = url;
+  saveQAs(items);
+  loadQA();
+}
+
+function deleteQA(idx){
+  if(!confirm('이 질문을 삭제하시겠습니까?')) return;
+  var items = getQAs();
+  items.splice(idx, 1);
+  saveQAs(items);
+  loadQA();
+}
+
+function addQA(){
+  var title   = document.getElementById('qa-new-title').value.trim();
+  var cat     = document.getElementById('qa-new-cat').value;
+  var email   = document.getElementById('qa-new-email').value.trim();
+  var content = document.getElementById('qa-new-content').value.trim();
+  if(!title){ alert('제목을 입력하세요.'); return; }
+  var items = getQAs();
+  var newId = 'q' + String(Date.now()).slice(-6);
+  items.unshift({
+    id: newId,
+    title: title,
+    content: content,
+    category: cat,
+    email: email,
+    status: '접수됨',
+    date: new Date().toISOString().slice(0,10),
+    post_url: ''
+  });
+  saveQAs(items);
+  document.getElementById('qa-new-title').value='';
+  document.getElementById('qa-new-cat').value='';
+  document.getElementById('qa-new-email').value='';
+  document.getElementById('qa-new-content').value='';
+  loadQA();
+}
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ── 초기화 ───────────────────────────────────────────────────
 async function init(){
-  loadSubs();  // 먼저 localStorage로 표시
-  // 이전에 연결했던 폴더 핸들 복원
+  loadSubs();
+  loadQA();
   try {
     var h = await loadHandle();
     if(h){
@@ -279,11 +466,13 @@ async function init(){
       if(perm === 'granted'){
         dirHandle = h;
         setFsBar(h.name);
-        await readFileIntoStore();  // 파일 → localStorage 동기화
-        loadSubs();                 // 파일 기준으로 재표시
+        await readSubsFile();
+        await readQAFile();
+        loadSubs();
+        loadQA();
       }
     }
-  } catch(e){ /* 무시 */ }
+  } catch(e){}
 }
 </script>
 </body>
