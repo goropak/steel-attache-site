@@ -88,12 +88,14 @@
             thumbDiv.style.background = '#f5f3ee';
             thumbDiv.style.padding = '0';
             thumbDiv.style.display = 'block';
+            thumbDiv.style.overflow = 'hidden';
             thumbDiv.innerHTML = svg.outerHTML;
             var injected = thumbDiv.querySelector('svg');
             if (injected) {
-              injected.style.width = '100%';
-              injected.style.height = 'auto';
-              injected.style.display = 'block';
+              /* 16:9 컨테이너를 꽉 채우도록 — object-fit:cover 효과 */
+              injected.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+              injected.style.cssText = 'width:100%;height:100%;display:block;position:absolute;top:0;left:0;';
+              thumbDiv.style.position = 'relative';
             }
           }
         }
