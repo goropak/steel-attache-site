@@ -708,3 +708,157 @@ article blockquote { font-size: 1.125rem; line-height: 1.8; }
   .search-dropdown { width: 280px; right: -40px; }
   .about { padding: var(--sp-4); }
 }
+
+/* ============================================================
+   Article Navigation — 상단 고정 바 · 시리즈 도트 · 이전/다음 카드
+   2026-06-30
+   ============================================================ */
+
+/* ── 상단 고정 바 ── */
+.art-topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+  height: 44px;
+  background: rgba(17,22,29,.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  transform: translateY(-100%);
+  transition: transform .25s ease;
+}
+.art-topbar--visible { transform: translateY(0); }
+
+.art-back {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .78rem;
+  color: #c8c2ba;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.art-back:hover { color: #fff; }
+.art-back-arrow {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-left: 2px solid #D62828;
+  border-bottom: 2px solid #D62828;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.art-progress-wrap {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,.12);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.art-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #D62828;
+  border-radius: 2px;
+  transition: width .1s linear;
+}
+
+.art-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.art-readtime {
+  font-size: .72rem;
+  color: #9a8a7a;
+}
+.art-share {
+  background: none;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 4px;
+  color: #c8c2ba;
+  font-size: .72rem;
+  padding: 3px 9px;
+  cursor: pointer;
+  line-height: 1.4;
+}
+.art-share:hover { border-color: #D62828; color: #fff; }
+
+/* ── 시리즈 도트 바 ── */
+.series-strip {
+  margin: 1rem 0 1.6rem;
+  padding: 14px 18px;
+  background: #f5f3ee;
+  border: 1px solid #e6e0d4;
+  border-radius: 10px;
+}
+.series-strip__label {
+  font-size: .72rem;
+  color: #9a8a7a;
+  letter-spacing: .04em;
+  margin-bottom: 10px;
+}
+.series-strip__dots {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.series-strip__line {
+  flex: 1;
+  height: 2px;
+  background: #e0dbd2;
+  display: block;
+}
+.series-dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform .15s, box-shadow .15s;
+}
+.series-dot--done   { background: #ddd8cf; color: #9a8a7a; }
+.series-dot--cur    { background: #D62828; color: #fff; box-shadow: 0 2px 8px rgba(214,40,40,.35); }
+.series-dot--future { background: #fff; border: 2px solid #e0dbd2; color: #bbb; }
+.series-dot--done:hover,
+.series-dot--future:hover { transform: scale(1.12); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* ── 이전/다음 카드 ── */
+.post-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 2.4rem 0 2rem;
+}
+.post-nav__card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px;
+  border-radius: 10px;
+  background: #11161d;
+  text-decoration: none;
+  transition: background .15s;
+}
+.post-nav__card:hover { background: #1c2330; }
+.post-nav__card--prev { align-items: flex-start; }
+.post-nav__card--next { align-items: flex-end; text-align: right; }
+.post-nav__card--end  { align-items: center; text-align: center; opacity: .6; cursor: default; }
+.post-nav__dir  { font-size: .72rem; color: #D62828; font-weight: 600; letter-spacing: .03em; }
+.post-nav__title { font-size: .88rem; color: #e8e3da; font-weight: 600; line-height: 1.45; }
+
+@media (max-width: 560px) {
+  .post-nav { grid-template-columns: 1fr; }
+  .post-nav__card--next { align-items: flex-start; text-align: left; }
+  .art-readtime { display: none; }
+}
