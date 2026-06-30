@@ -83,15 +83,18 @@
         var doc = parser.parseFromString(html, 'text/html');
         var fig = doc.querySelector('figure.infog');
         if (fig) {
-          thumbDiv.style.background = '#11161d';
-          thumbDiv.style.padding = '0';
-          thumbDiv.style.display = 'block';
-          thumbDiv.innerHTML = fig.innerHTML;
-          var svg = thumbDiv.querySelector('svg');
+          var svg = fig.querySelector('svg');
           if (svg) {
-            svg.style.width = '100%';
-            svg.style.height = 'auto';
-            svg.style.display = 'block';
+            thumbDiv.style.background = '#f5f3ee';
+            thumbDiv.style.padding = '0';
+            thumbDiv.style.display = 'block';
+            thumbDiv.innerHTML = svg.outerHTML;
+            var injected = thumbDiv.querySelector('svg');
+            if (injected) {
+              injected.style.width = '100%';
+              injected.style.height = 'auto';
+              injected.style.display = 'block';
+            }
           }
         }
       })
