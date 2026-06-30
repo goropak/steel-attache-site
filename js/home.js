@@ -102,11 +102,8 @@
     fetch('data/posts.json')
       .then(function (r) { return r.json(); })
       .then(function (posts) {
-        var hero = null;
-        for (var i = 0; i < posts.length; i++) {
-          if (posts[i].featured === 'hero') { hero = posts[i]; break; }
-        }
-        if (!hero) hero = posts[0];
+        /* posts.json 맨 위 = 가장 최신 글 → 항상 히어로 */
+        var hero = posts[0];
 
         var sides = posts.filter(function (p) { return p !== hero; }).slice(0, 4);
         var left = sides.slice(0, 2);
