@@ -72,22 +72,6 @@ img { max-width: 100%; height: auto; display: block; }
 .serif { font-family: var(--font-head); }
 .mono  { font-family: var(--font-mono); }
 
-/* ---------- 고로문고 상호 연결 배너 (#GS3 하이브리드 b) ---------- */
-/* 스크롤 시 사라지는 비고정 바 — 마스트헤드(sticky)와 겹치지 않게 의도적으로 non-sticky */
-.cross-portal { background: #1e5c45; color: #eafff3; }
-.cross-portal .wrap { display: flex; justify-content: center; padding: 7px 24px; }
-.cross-portal a {
-  color: #eafff3;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  text-align: center;
-  word-break: keep-all;
-}
-.cross-portal a:hover { text-decoration: underline; }
-
 /* ---------- 마스트헤드 ---------- */
 .masthead {
   background: var(--steel);
@@ -125,6 +109,14 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .mh-nav a { color: #cdd6df; font-size: .875rem; margin-left: 18px; letter-spacing: .02em; }
 .mh-nav a:hover { color: #fff; text-decoration: none; }
+/* 고로문고 연결 링크 — 사이트 자체 nav 링크 톤 유지 + 파트너 포털 색으로만 구분(#GS3 하이브리드 b) */
+.mh-nav a.mh-partner {
+  color: #8fe3bd;
+  padding-left: 18px;
+  border-left: 1px solid rgba(255,255,255,.18);
+  white-space: nowrap;
+}
+.mh-nav a.mh-partner:hover { color: #b8f0d6; }
 
 /* ---------- 검색 ---------- */
 .search-bar { position: relative; flex-shrink: 0; }
