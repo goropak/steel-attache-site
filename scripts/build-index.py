@@ -35,7 +35,8 @@ def build():
         print(f"  ✅ {p.name}: {entry['title'][:30]}")
 
     # 날짜 내림차순 정렬 (featured=hero 최상단 고정)
-    posts.sort(key=lambda x: (x["featured"] != "hero", x["date"]), reverse=False)
+    posts.sort(key=lambda x: x["date"], reverse=True)
+    posts.sort(key=lambda x: x["featured"] != "hero")  # stable — hero만 최상단으로
 
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(posts, ensure_ascii=False, indent=2), encoding="utf-8")

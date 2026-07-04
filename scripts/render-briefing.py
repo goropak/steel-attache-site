@@ -208,7 +208,7 @@ def build_html(pub_date, title, post_count, news_count, body_html):
 <meta name="sa-summary" content="{sa_summary}">
 <meta name="sa-category" content="주간브리핑">
 <meta name="sa-date" content="{pub_date}">
-<meta name="sa-featured" content="false">
+<meta name="sa-featured" content="hero">
 <meta name="sa-thumb" content="">
 <meta name="sa-author" content="편집실">
 <link rel="stylesheet" href="../style.css">
@@ -266,6 +266,18 @@ def main():
 
     out_path = SITE_DIR / "posts" / f"briefing-{pub_date}.html"
     out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # 기존 hero 강등 — hero는 항상 최신 브리핑 1개만
+    for old in (SITE_DIR / "posts").glob("*.html"):
+        if old.name == out_path.name:
+            continue
+        old_html = old.read_text(encoding='utf-8')
+        if 'name="sa-featured" content="hero"' in old_html:
+            old.write_text(old_html.replace(
+                'name="sa-featured" content="hero"',
+                'name="sa-featured" content="false"'), encoding='utf-8')
+            print(f"  → hero 강등: {old.name}")
+
     out_path.write_text(html, encoding='utf-8')
     print(f"✅ HTML 렌더 완료: {out_path}")
 

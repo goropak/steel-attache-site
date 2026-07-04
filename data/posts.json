@@ -1,63 +1,13 @@
 [
   {
-    "title": "EU 세이프가드 강화·미국 관세 유지 속, 한국의 현지생산 카드",
-    "summary": "EU 철강 세이프가드가 7월 대폭 강화(쿼터 절반↓·초과관세 25→50%), 미국은 50% 관세 유지. 포스코·현대제철은 미국 EAF와 전기강판에서 보폭을 넓혔고, 중국은 감산 기조를 이어간다.",
+    "title": "주간 브리핑 — 2026년 07월 04일",
+    "summary": "일본 철강사 6부작 완간 — 173년의 궤적, EU 신 세이프가드 7월 1일 발효. 게시 콘텐츠 중심 구성.",
     "category": "주간브리핑",
     "author": "편집실",
-    "date": "2026-06-21",
-    "url": "posts/briefing-2026-06-21.html",
+    "date": "2026-07-04",
+    "url": "posts/briefing-2026-07-04.html",
     "thumb": "",
     "featured": "hero"
-  },
-  {
-    "title": "포스코 전기로 가동 + 세계 조강 — 숫자로 증명된 구조 전환",
-    "summary": "포스코 광양 국내 최대 전기로(연 250만t) 6월 가동. worldsteel 5월 조강 157.9Mt — 중국 -2.7%, 미국 +9.2%, 북미 +15.6%. 숫자가 증명하는 구조 전환.",
-    "category": "주간브리핑",
-    "author": "편집실",
-    "date": "2026-06-26",
-    "url": "posts/briefing-2026-06-26.html",
-    "thumb": "images/thumb-briefing-0626.svg",
-    "featured": "hero"
-  },
-  {
-    "title": "EU 신 세이프가드 D-3 · OECD 과잉설비 745Mt 경고 — 7월이 재편하는 철강 지형",
-    "summary": "7월 1일 EU 신 세이프가드 발효(쿼터 47% 삭감·초과관세 50%). OECD는 2028년 과잉설비 745Mt 경고, 동남아 우회 300% 급증. 일본제철 US Steel 인수 후 첫 직채 900억엔, 30년 최고 쿠폰.",
-    "category": "주간브리핑",
-    "author": "편집실",
-    "date": "2026-06-28",
-    "url": "posts/briefing-2026-06-28.html",
-    "thumb": "",
-    "featured": "hero"
-  },
-  {
-    "title": "야하타에서 US Steel까지 — 일본 제철 124년, 첫 번째 나무",
-    "summary": "야하타(1901)에서 NSC·JFE 양강, 고로 휴지 합리화, US Steel 인수(2025.6)까지. 일본은 한국의 '20년 뒤 거울' — 인수 vs 신설, 골든셰어 리스크까지 한국 관점으로 읽는다.",
-    "category": "일본",
-    "author": "편집실",
-    "date": "2026-06-20",
-    "url": "posts/japan-01.html",
-    "thumb": "",
-    "featured": "side"
-  },
-  {
-    "title": "별의 잔해에서 제철소까지 — 철, 138억 년의 이력서",
-    "summary": "우주가 철을 빚은 순간부터 지구의 BIF, 인류의 철기시대, 제철 기술사, 그리고 연 18.4억 톤의 현대 산업까지. 시리즈의 출발점.",
-    "category": "숲",
-    "author": "편집실",
-    "date": "2026-06-20",
-    "url": "posts/forest-01.html",
-    "thumb": "",
-    "featured": "side"
-  },
-  {
-    "title": "고로에 AI가 들어갔다 — 화웨이와 중국 스마트 제철의 지금",
-    "summary": "화웨이 판구 AI가 바오스틸 고로를 완전 자동 제어하는 시대. 1망1운3대 아키텍처·367 시나리오·DeepSeek 3층 구조·바오신·CISDI 동남아 수출까지 — 포스코 관점으로 읽는다.",
-    "category": "중국",
-    "author": "편집실",
-    "date": "2026-06-26",
-    "url": "posts/china-tech-01.html",
-    "thumb": "",
-    "featured": "side"
   },
   {
     "title": "그린스틸 패권 전쟁과 한·일 평행이론",
@@ -120,13 +70,63 @@
     "featured": "side"
   },
   {
-    "title": "주간 브리핑 — 2026년 07월 04일",
-    "summary": "2026년 7월 4일 주간 브리핑. 이번 주 게시 0건, 외부 뉴스 0건 수집.",
+    "title": "EU 신 세이프가드 D-3 · OECD 과잉설비 745Mt 경고 — 7월이 재편하는 철강 지형",
+    "summary": "7월 1일 EU 신 세이프가드 발효(쿼터 47% 삭감·초과관세 50%). OECD는 2028년 과잉설비 745Mt 경고, 동남아 우회 300% 급증. 일본제철 US Steel 인수 후 첫 직채 900억엔, 30년 최고 쿠폰.",
     "category": "주간브리핑",
     "author": "편집실",
-    "date": "2026-07-04",
-    "url": "posts/briefing-2026-07-04.html",
+    "date": "2026-06-28",
+    "url": "posts/briefing-2026-06-28.html",
     "thumb": "",
     "featured": "false"
+  },
+  {
+    "title": "고로에 AI가 들어갔다 — 화웨이와 중국 스마트 제철의 지금",
+    "summary": "화웨이 판구 AI가 바오스틸 고로를 완전 자동 제어하는 시대. 1망1운3대 아키텍처·367 시나리오·DeepSeek 3층 구조·바오신·CISDI 동남아 수출까지 — 포스코 관점으로 읽는다.",
+    "category": "중국",
+    "author": "편집실",
+    "date": "2026-06-26",
+    "url": "posts/china-tech-01.html",
+    "thumb": "",
+    "featured": "side"
+  },
+  {
+    "title": "포스코 전기로 가동 + 세계 조강 — 숫자로 증명된 구조 전환",
+    "summary": "포스코 광양 국내 최대 전기로(연 250만t) 6월 가동. worldsteel 5월 조강 157.9Mt — 중국 -2.7%, 미국 +9.2%, 북미 +15.6%. 숫자가 증명하는 구조 전환.",
+    "category": "주간브리핑",
+    "author": "편집실",
+    "date": "2026-06-26",
+    "url": "posts/briefing-2026-06-26.html",
+    "thumb": "images/thumb-briefing-0626.svg",
+    "featured": "false"
+  },
+  {
+    "title": "EU 세이프가드 강화·미국 관세 유지 속, 한국의 현지생산 카드",
+    "summary": "EU 철강 세이프가드가 7월 대폭 강화(쿼터 절반↓·초과관세 25→50%), 미국은 50% 관세 유지. 포스코·현대제철은 미국 EAF와 전기강판에서 보폭을 넓혔고, 중국은 감산 기조를 이어간다.",
+    "category": "주간브리핑",
+    "author": "편집실",
+    "date": "2026-06-21",
+    "url": "posts/briefing-2026-06-21.html",
+    "thumb": "",
+    "featured": "false"
+  },
+  {
+    "title": "야하타에서 US Steel까지 — 일본 제철 124년, 첫 번째 나무",
+    "summary": "야하타(1901)에서 NSC·JFE 양강, 고로 휴지 합리화, US Steel 인수(2025.6)까지. 일본은 한국의 '20년 뒤 거울' — 인수 vs 신설, 골든셰어 리스크까지 한국 관점으로 읽는다.",
+    "category": "일본",
+    "author": "편집실",
+    "date": "2026-06-20",
+    "url": "posts/japan-01.html",
+    "thumb": "",
+    "featured": "side"
+  },
+  {
+    "title": "별의 잔해에서 제철소까지 — 철, 138억 년의 이력서",
+    "summary": "우주가 철을 빚은 순간부터 지구의 BIF, 인류의 철기시대, 제철 기술사, 그리고 연 18.4억 톤의 현대 산업까지. 시리즈의 출발점.",
+    "category": "숲",
+    "author": "편집실",
+    "date": "2026-06-20",
+    "url": "posts/forest-01.html",
+    "thumb": "",
+    "featured": "side"
   }
 ]

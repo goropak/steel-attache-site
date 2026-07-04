@@ -205,10 +205,12 @@ def load_subscribers():
 def load_latest_post():
     with open(POSTS_F, encoding="utf-8") as f:
         posts = json.load(f)
-    for p in posts:
-        if p.get("featured") == "hero":
-            return p
-    return posts[0] if posts else None
+    if not posts:
+        return None
+    # hero 중 최신 날짜 우선, 없으면 전체 중 최신 날짜 (배열 순서에 의존하지 않음)
+    heroes = [p for p in posts if p.get("featured") == "hero"]
+    pool = heroes or posts
+    return max(pool, key=lambda p: p.get("date", ""))
 
 # ── 발송 ─────────────────────────────────────────────────────
 def send(post, content, subs, dry_run=False):
