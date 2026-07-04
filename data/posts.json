@@ -1,73 +1,13 @@
 [
   {
-    "title": "일본제국의 쇳물에서 그린스틸로 1부 — 흑선이 깨운 나라",
-    "summary": "1853년 페리 흑선 충격에서 오시마의 카마이시 고로(1857), 야하타 제철소 화입(1901), 실패와 노로 카게요시의 재가동(1904)까지. 엔지니어링 자립이 국가 생존이 된 순간들.",
-    "category": "일본",
-    "author": "편집실",
-    "date": "2026-06-30",
-    "url": "posts/japan-steel-01.html",
-    "thumb": "",
-    "featured": "hero"
-  },
-  {
-    "title": "일본제국의 쇳물에서 그린스틸로 2부 — 잿더미에서 세계 1위로",
-    "summary": "GHQ에 의한 일본제철 해체, 한국전쟁 특수, 치바 갯벌의 임해 제철소 혁명, LD 전로 세계 최초 도입, 1970년 신일본제철 탄생. 1945년 56만 톤에서 1973년 1.19억 톤까지의 기적.",
-    "category": "일본",
-    "author": "편집실",
-    "date": "2026-06-30",
-    "url": "posts/japan-steel-02.html",
-    "thumb": "",
-    "featured": "side"
-  },
-  {
-    "title": "일본제국의 쇳물에서 그린스틸로 3부 — 뼈를 깎는 36년",
-    "summary": "오일쇼크로 시작된 감량 경영, 엔고로 무너진 수출 경쟁력, 카마이시 고로 폐쇄의 상징성, 포스코의 등장, JFE 탄생, NSC-POSCO 백기사 동맹. 일본이 범용재를 버리고 기술 초격차를 선택한 36년.",
-    "category": "일본",
-    "author": "편집실",
-    "date": "2026-06-30",
-    "url": "posts/japan-steel-03.html",
-    "thumb": "",
-    "featured": "side"
-  },
-  {
-    "title": "일본제국의 쇳물에서 그린스틸로 4부 — 쿠레와 케이힌의 불꽃을 끄다",
-    "summary": "2011년 동일본 대지진이 드러낸 공급망 취약성, 2012년 신일철주금(현 일본제철) 탄생, 2020년 쿠레·케이힌 제철소 영구 폐쇄 결단. 수익성을 위해 상징을 버린 전환의 10년.",
-    "category": "일본",
-    "author": "편집실",
-    "date": "2026-06-30",
-    "url": "posts/japan-steel-04.html",
-    "thumb": "",
-    "featured": "side"
-  },
-  {
-    "title": "일본제국의 쇳물에서 그린스틸로 5부 — 141억 달러, US 스틸을 삼키다",
-    "summary": "일본제철(NSC)의 US 스틸 141억 달러 인수(2025.6), 인도 AM/NS 증설, 태국 G-Steel 인수. 하시모토 에이지의 글로벌 1억 톤 비전 — 황금주 리스크와 포스코에의 시사점.",
-    "category": "일본",
-    "author": "편집실",
-    "date": "2026-06-30",
-    "url": "posts/japan-steel-05.html",
-    "thumb": "",
-    "featured": "side"
-  },
-  {
-    "title": "일본제국의 쇳물에서 그린스틸로 6부 — 그린스틸 패권 전쟁",
-    "summary": "일본의 점진적 전환(수소환원고로+대형 전기로) vs 포스코의 HyREX 혁신. GX 탄소세·CBAM 압박. 20년 시차의 한·일 철강 평행이론 — 미래 100년을 위한 3대 제언.",
-    "category": "일본",
-    "author": "편집실",
-    "date": "2026-06-30",
-    "url": "posts/japan-steel-06.html",
-    "thumb": "",
-    "featured": "side"
-  },
-  {
-    "title": "EU 신 세이프가드 D-3 · OECD 과잉설비 745Mt 경고 — 7월이 재편하는 철강 지형",
-    "summary": "7월 1일 EU 신 세이프가드 발효(쿼터 47% 삭감·초과관세 50%). OECD는 2028년 과잉설비 745Mt 경고, 동남아 우회 300% 급증. 일본제철 US Steel 인수 후 첫 직채 900억엔, 30년 최고 쿠폰.",
+    "title": "EU 세이프가드 강화·미국 관세 유지 속, 한국의 현지생산 카드",
+    "summary": "EU 철강 세이프가드가 7월 대폭 강화(쿼터 절반↓·초과관세 25→50%), 미국은 50% 관세 유지. 포스코·현대제철은 미국 EAF와 전기강판에서 보폭을 넓혔고, 중국은 감산 기조를 이어간다.",
     "category": "주간브리핑",
     "author": "편집실",
-    "date": "2026-06-28",
-    "url": "posts/briefing-2026-06-28.html",
+    "date": "2026-06-21",
+    "url": "posts/briefing-2026-06-21.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "hero"
   },
   {
     "title": "포스코 전기로 가동 + 세계 조강 — 숫자로 증명된 구조 전환",
@@ -77,17 +17,17 @@
     "date": "2026-06-26",
     "url": "posts/briefing-2026-06-26.html",
     "thumb": "images/thumb-briefing-0626.svg",
-    "featured": "side"
+    "featured": "hero"
   },
   {
-    "title": "EU 세이프가드 강화·미국 관세 유지 속, 한국의 현지생산 카드",
-    "summary": "EU 철강 세이프가드가 7월 대폭 강화(쿼터 절반↓·초과관세 25→50%), 미국은 50% 관세 유지. 포스코·현대제철은 미국 EAF와 전기강판에서 보폭을 넓혔고, 중국은 감산 기조를 이어간다.",
+    "title": "EU 신 세이프가드 D-3 · OECD 과잉설비 745Mt 경고 — 7월이 재편하는 철강 지형",
+    "summary": "7월 1일 EU 신 세이프가드 발효(쿼터 47% 삭감·초과관세 50%). OECD는 2028년 과잉설비 745Mt 경고, 동남아 우회 300% 급증. 일본제철 US Steel 인수 후 첫 직채 900억엔, 30년 최고 쿠폰.",
     "category": "주간브리핑",
     "author": "편집실",
-    "date": "2026-06-21",
-    "url": "posts/briefing-2026-06-21.html",
-    "thumb": "images/infog-eu-tariff-2026.svg",
-    "featured": "side"
+    "date": "2026-06-28",
+    "url": "posts/briefing-2026-06-28.html",
+    "thumb": "",
+    "featured": "hero"
   },
   {
     "title": "야하타에서 US Steel까지 — 일본 제철 124년, 첫 번째 나무",
@@ -96,7 +36,17 @@
     "author": "편집실",
     "date": "2026-06-20",
     "url": "posts/japan-01.html",
-    "thumb": "images/thumb-japan-01.svg",
+    "thumb": "",
+    "featured": "side"
+  },
+  {
+    "title": "별의 잔해에서 제철소까지 — 철, 138억 년의 이력서",
+    "summary": "우주가 철을 빚은 순간부터 지구의 BIF, 인류의 철기시대, 제철 기술사, 그리고 연 18.4억 톤의 현대 산업까지. 시리즈의 출발점.",
+    "category": "숲",
+    "author": "편집실",
+    "date": "2026-06-20",
+    "url": "posts/forest-01.html",
+    "thumb": "",
     "featured": "side"
   },
   {
@@ -110,13 +60,73 @@
     "featured": "side"
   },
   {
-    "title": "별의 잔해에서 제철소까지 — 철, 138억 년의 이력서",
-    "summary": "우주가 철을 빚은 순간부터 지구의 BIF, 인류의 철기시대, 제철 기술사, 그리고 연 18.4억 톤의 현대 산업까지. 시리즈의 출발점.",
-    "category": "숲",
+    "title": "그린스틸 패권 전쟁과 한·일 평행이론",
+    "summary": "일본의 점진적 전환(수소환원고로+대형 전기로) vs 포스코의 HyREX 혁신. GX 탄소세·CBAM 압박. 20년 시차의 한·일 철강 평행이론 — 미래 100년을 위한 3대 제언.",
+    "category": "일본",
     "author": "편집실",
-    "date": "2026-06-20",
-    "url": "posts/forest-01.html",
-    "thumb": "images/thumb-forest-01.svg",
+    "date": "2026-06-30",
+    "url": "posts/japan-steel-06.html",
+    "thumb": "",
     "featured": "side"
+  },
+  {
+    "title": "141억 달러, US 스틸을 삼키다",
+    "summary": "일본제철(NSC)의 US 스틸 141억 달러 인수(2025.6), 인도 AM/NS 증설, 태국 G-Steel 인수. 하시모토 에이지의 글로벌 1억 톤 비전 — 황금주 리스크와 포스코에의 시사점.",
+    "category": "일본",
+    "author": "편집실",
+    "date": "2026-06-30",
+    "url": "posts/japan-steel-05.html",
+    "thumb": "",
+    "featured": "side"
+  },
+  {
+    "title": "쿠레와 케이힌의 불꽃을 끄다 — 전환의 10년",
+    "summary": "2011년 동일본 대지진이 드러낸 공급망 취약성, 2012년 신일철주금(현 일본제철) 탄생, 2020년 쿠레·케이힌 제철소 영구 폐쇄 결단. 수익성을 위해 상징을 버린 전환의 10년.",
+    "category": "일본",
+    "author": "편집실",
+    "date": "2026-06-30",
+    "url": "posts/japan-steel-04.html",
+    "thumb": "",
+    "featured": "side"
+  },
+  {
+    "title": "뼈를 깎는 36년 — 오일쇼크에서 JFE 탄생까지",
+    "summary": "오일쇼크로 시작된 감량 경영, 엔고로 무너진 수출 경쟁력, 카마이시 고로 폐쇄의 상징성, 포스코의 등장, JFE 탄생, NSC-POSCO 백기사 동맹. 일본이 범용재를 버리고 기술 초격차를 선택한 36년.",
+    "category": "일본",
+    "author": "편집실",
+    "date": "2026-06-30",
+    "url": "posts/japan-steel-03.html",
+    "thumb": "",
+    "featured": "side"
+  },
+  {
+    "title": "잿더미에서 세계 1위로 — 일본 철강, 기적의 28년",
+    "summary": "GHQ에 의한 일본제철 해체, 한국전쟁 특수, 치바 갯벌의 임해 제철소 혁명, LD 전로 세계 최초 도입, 1970년 신일본제철 탄생. 1945년 56만 톤에서 1973년 1.19억 톤까지의 기적.",
+    "category": "일본",
+    "author": "편집실",
+    "date": "2026-06-30",
+    "url": "posts/japan-steel-02.html",
+    "thumb": "",
+    "featured": "side"
+  },
+  {
+    "title": "흑선이 깨운 나라 — 일본, 철로 근대를 만들다",
+    "summary": "1853년 페리 흑선 충격에서 오시마의 카마이시 고로(1857), 야하타 제철소 화입(1901), 실패와 노로 카게요시의 재가동(1904)까지. 엔지니어링 자립이 국가 생존이 된 순간들.",
+    "category": "일본",
+    "author": "편집실",
+    "date": "2026-06-30",
+    "url": "posts/japan-steel-01.html",
+    "thumb": "",
+    "featured": "side"
+  },
+  {
+    "title": "주간 브리핑 — 2026년 07월 04일",
+    "summary": "2026년 7월 4일 주간 브리핑. 이번 주 게시 7건, 외부 뉴스 0건 수집.",
+    "category": "주간브리핑",
+    "author": "편집실",
+    "date": "2026-07-04",
+    "url": "posts/briefing-2026-07-04.html",
+    "thumb": "",
+    "featured": "false"
   }
 ]
