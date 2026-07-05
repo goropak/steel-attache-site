@@ -1,7 +1,7 @@
 #!/bin/bash
 # 아티클 네비게이션 배포 스크립트
 set -e
-SITE="/Users/clean/Desktop/project/steel-attache/site"
+SITE="$HOME/Desktop/project/steel-attache/site"
 
 find "$SITE/.git" -name "*.lock" -delete 2>/dev/null || true
 
