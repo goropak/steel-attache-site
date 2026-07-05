@@ -1,2 +1,6 @@
 # 구독자 이메일 — 개인정보 보호, 공개 레포에 올리지 않음
 data/subscribers.json
+
+# 빌드/캐시 산출물 — 커밋 대상 아님
+node_modules/
+scripts/__pycache__/
