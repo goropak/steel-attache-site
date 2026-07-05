@@ -80,20 +80,8 @@ def md_body_to_html(md_text):
     skip_sections = {'편집 메모'}
     skip_active = False
 
-    in_raw_html = False   # <figure class="infog"> 블록 통과 모드
-
     for i, raw in enumerate(lines):
         line = raw.rstrip()
-
-        # ── raw HTML 블록 (인포그래픽 figure) 그대로 통과 ──
-        if line.lstrip().startswith('<figure'):
-            if in_list: html.append('</ul>'); in_list = False
-            in_raw_html = True
-        if in_raw_html:
-            html.append(line)
-            if '</figure>' in line:
-                in_raw_html = False
-            continue
 
         # ── 프론트매터 ──
         if i == 0 and line.strip() == '---':
@@ -207,15 +195,7 @@ def build_html(pub_date, title, post_count, news_count, body_html):
     date_kr = f"{y}년 {int(mo)}월 {int(d)}일"
     week_ago = (date.fromisoformat(pub_date) - timedelta(days=7)).isoformat()
     period = f"{week_ago} ~ {pub_date}"
-    # 카드 요약: 리드 첫 문장 사용 (없으면 기존 형식)
-    lead_m = re.search(r'<div class="lead">\s*<p>(.*?)</p>', body_html, re.S)
-    if lead_m:
-        first = re.sub(r'<sup[^>]*>.*?</sup>', '', lead_m.group(1), flags=re.S)
-        first = re.sub(r'<[^>]+>', '', first).strip()
-        first = re.sub(r'\[\^?\d+\]', '', first)
-        sa_summary = first[:120]
-    else:
-        sa_summary = f"{date_kr} 주간 브리핑. 이번 주 게시 {post_count}건, 외부 뉴스 {news_count}건 수집."
+    sa_summary = f"{date_kr} 주간 브리핑. 이번 주 게시 {post_count}건, 외부 뉴스 {news_count}건 수집."
 
     return f"""<!DOCTYPE html>
 <html lang="ko">
