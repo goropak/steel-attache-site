@@ -570,6 +570,7 @@ article blockquote { font-size: 1.125rem; line-height: 1.8; }
 }
 .notes ol { padding-left: 20px; }
 .notes li { margin: 6px 0; }
+.notes a { word-break: break-all; overflow-wrap: anywhere; }
 .notes .meta { color: #9a9284; font-style: italic; margin-top: 14px; }
 .correction {
   background: #fff8f6;
