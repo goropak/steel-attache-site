@@ -92,8 +92,13 @@
             thumbDiv.innerHTML = svg.outerHTML;
             var injected = thumbDiv.querySelector('svg');
             if (injected) {
-              /* 16:9 컨테이너를 꽉 채우도록 — object-fit:cover 효과 */
-              injected.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+              /* #2026-07-11-SA-RWD 수정: "slice"(object-fit:cover 효과)는 인포그래픽
+                 원본이 16:9보다 훨씬 넓을 때(예 680x210 ≈ 3.24:1) 좌우를 크게 잘라내
+                 라벨·출처 텍스트가 화면에서 통째로 사라지는 문제가 실측됨(예: 홈 히어로
+                 카드에서 인포그래픽 좌측 제목·출처 문구가 잘려 안 보임 — "왼쪽 잘림"
+                 유형과 동형). "meet"(object-fit:contain 효과)으로 바꿔 잘림 없이 전체를
+                 보여주고, 남는 여백은 배경색(#f5f3ee, 위에서 이미 지정)으로 채운다. */
+              injected.setAttribute('preserveAspectRatio', 'xMidYMid meet');
               injected.style.cssText = 'width:100%;height:100%;display:block;position:absolute;top:0;left:0;';
               thumbDiv.style.position = 'relative';
             }
