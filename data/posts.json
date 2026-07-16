@@ -7,7 +7,8 @@
     "date": "2026-07-11",
     "url": "posts/briefing-2026-07-11.html",
     "thumb": "",
-    "featured": "hero"
+    "featured": "hero",
+    "premium": ""
   },
   {
     "title": "IJmuiden 고로의 미분탄은 누가 넣는가",
@@ -17,7 +18,19 @@
     "date": "2026-07-16",
     "url": "posts/tata-ijmuiden-pci.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
+  },
+  {
+    "title": "🔒 [유료] Dastur(M.N. Dastur) 기업 심층 분석",
+    "summary": "승인 열람 전용 유료 보고서 — Dastur(M.N. Dastur) 기업 심층 분석과 포스코 인니 2기 제철소 신설 검토 연계. 열람하려면 관리자 승인(키 포함 링크)이 필요합니다.",
+    "category": "포스코·현대제철",
+    "author": "편집실",
+    "date": "2026-07-16",
+    "url": "premium/dastur-mn-report.html",
+    "thumb": "",
+    "featured": "",
+    "premium": "true"
   },
   {
     "title": "노저의 검은 벽돌은 누가 만드는가",
@@ -27,7 +40,8 @@
     "date": "2026-07-09",
     "url": "posts/hearth-carbon-cobex.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   },
   {
     "title": "주간 브리핑 — 2026년 07월 04일",
@@ -37,7 +51,8 @@
     "date": "2026-07-04",
     "url": "posts/briefing-2026-07-04.html",
     "thumb": "",
-    "featured": "false"
+    "featured": "false",
+    "premium": ""
   },
   {
     "title": "그린스틸 패권 전쟁과 한·일 평행이론",
@@ -47,7 +62,8 @@
     "date": "2026-06-30",
     "url": "posts/japan-steel-06.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   },
   {
     "title": "141억 달러, US 스틸을 삼키다",
@@ -57,7 +73,8 @@
     "date": "2026-06-30",
     "url": "posts/japan-steel-05.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   },
   {
     "title": "쿠레와 케이힌의 불꽃을 끄다 — 전환의 10년",
@@ -67,7 +84,8 @@
     "date": "2026-06-30",
     "url": "posts/japan-steel-04.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   },
   {
     "title": "뼈를 깎는 36년 — 오일쇼크에서 JFE 탄생까지",
@@ -77,7 +95,8 @@
     "date": "2026-06-30",
     "url": "posts/japan-steel-03.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   },
   {
     "title": "잿더미에서 세계 1위로 — 일본 철강, 기적의 28년",
@@ -87,7 +106,8 @@
     "date": "2026-06-30",
     "url": "posts/japan-steel-02.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   },
   {
     "title": "흑선이 깨운 나라 — 일본, 철로 근대를 만들다",
@@ -97,7 +117,8 @@
     "date": "2026-06-30",
     "url": "posts/japan-steel-01.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   },
   {
     "title": "EU 신 세이프가드 D-3 · OECD 과잉설비 745Mt 경고 — 7월이 재편하는 철강 지형",
@@ -107,7 +128,8 @@
     "date": "2026-06-28",
     "url": "posts/briefing-2026-06-28.html",
     "thumb": "",
-    "featured": "false"
+    "featured": "false",
+    "premium": ""
   },
   {
     "title": "고로에 AI가 들어갔다 — 화웨이와 중국 스마트 제철의 지금",
@@ -117,7 +139,8 @@
     "date": "2026-06-26",
     "url": "posts/china-tech-01.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   },
   {
     "title": "포스코 전기로 가동 + 세계 조강 — 숫자로 증명된 구조 전환",
@@ -127,7 +150,8 @@
     "date": "2026-06-26",
     "url": "posts/briefing-2026-06-26.html",
     "thumb": "images/thumb-briefing-0626.svg",
-    "featured": "false"
+    "featured": "false",
+    "premium": ""
   },
   {
     "title": "EU 세이프가드 강화·미국 관세 유지 속, 한국의 현지생산 카드",
@@ -137,7 +161,8 @@
     "date": "2026-06-21",
     "url": "posts/briefing-2026-06-21.html",
     "thumb": "",
-    "featured": "false"
+    "featured": "false",
+    "premium": ""
   },
   {
     "title": "야하타에서 US Steel까지 — 일본 제철 124년, 첫 번째 나무",
@@ -147,7 +172,8 @@
     "date": "2026-06-20",
     "url": "posts/japan-01.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   },
   {
     "title": "별의 잔해에서 제철소까지 — 철, 138억 년의 이력서",
@@ -157,6 +183,7 @@
     "date": "2026-06-20",
     "url": "posts/forest-01.html",
     "thumb": "",
-    "featured": "side"
+    "featured": "side",
+    "premium": ""
   }
 ]

@@ -8,18 +8,20 @@ import re
 from pathlib import Path
 
 POSTS_DIR = Path("posts")
+PREMIUM_DIR = Path("premium")  # 유료(승인제) 글 — 암호화 게이트. 본문은 암호문, 목록엔 티저만.
 OUT = Path("data/posts.json")
 
 def parse_meta(html: str, name: str) -> str:
     m = re.search(rf'<meta\s+name="sa-{name}"\s+content="([^"]*)"', html)
     return m.group(1).strip() if m else ""
 
-def build():
-    posts = []
-    for p in sorted(POSTS_DIR.glob("*.html"), reverse=True):
+def collect(dir_path: Path, url_prefix: str, posts: list):
+    if not dir_path.exists():
+        return
+    for p in sorted(dir_path.glob("*.html"), reverse=True):
         html = p.read_text(encoding="utf-8")
         if 'name="sa-title"' not in html:
-            print(f"  건너뜀 (sa-* 없음): {p.name}")
+            print(f"  건너뜀 (sa-* 없음): {url_prefix}{p.name}")
             continue
         entry = {
             "title":    parse_meta(html, "title"),
@@ -27,12 +29,18 @@ def build():
             "category": parse_meta(html, "category"),
             "author":   parse_meta(html, "author") or "편집실",
             "date":     parse_meta(html, "date"),
-            "url":      f"posts/{p.name}",
+            "url":      f"{url_prefix}{p.name}",
             "thumb":    parse_meta(html, "thumb"),
             "featured": parse_meta(html, "featured"),
+            "premium":  parse_meta(html, "premium"),  # "true"면 유료(암호화 게이트) 글
         }
         posts.append(entry)
-        print(f"  ✅ {p.name}: {entry['title'][:30]}")
+        print(f"  ✅ {url_prefix}{p.name}: {entry['title'][:30]}")
+
+def build():
+    posts = []
+    collect(POSTS_DIR, "posts/", posts)
+    collect(PREMIUM_DIR, "premium/", posts)
 
     # 날짜 내림차순 정렬 (featured=hero 최상단 고정)
     posts.sort(key=lambda x: x["date"], reverse=True)
