@@ -8,5 +8,15 @@
     "status": "발행됨",
     "date": "2026-06-26",
     "post_url": "posts/china-tech-01.html"
+  },
+  {
+    "id": "q002",
+    "title": "Tata Steel IJmuiden 고로에 쓰는 미분탄(PCI) 공급사는 어디인가?",
+    "content": "IJmuiden에서 쓰는 미분탄 공급사를 알고 싶습니다. 공급사에서 3개 브랜드를 Mixing해서 가져오고 있으며, Ash 7% 이하, VM 30% 정도로 높은 탄입니다. 이 고품위 미분탄을 활용해 C.R 270kg, PCR 220kg 수준의 고효율·고BFG 발생 조업 중입니다.",
+    "category": "유럽",
+    "email": "example@posco.com",
+    "status": "발행됨",
+    "date": "2026-07-16",
+    "post_url": "posts/tata-ijmuiden-pci.html"
   }
 ]
