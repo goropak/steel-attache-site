@@ -4,3 +4,6 @@ data/subscribers.json
 # 빌드/캐시 산출물 — 커밋 대상 아님
 node_modules/
 scripts/__pycache__/
+
+# 유료 게이트 복호키 — 절대 커밋 금지 (헌법 0조, kp2-cilegon 지시서 §5 방어층)
+*.KEY.txt
