@@ -213,7 +213,18 @@ def load_latest_post():
     return max(pool, key=lambda p: p.get("date", ""))
 
 # ── 발송 ─────────────────────────────────────────────────────
+def _connect():
+    """SMTP_SSL 연결 + 로그인 1회. GMAIL_APP_PASSWORD 값은 어떤 예외 메시지에도 노출하지 않는다."""
+    s = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    s.login(GMAIL_USER, GMAIL_PASS)
+    return s
+
 def send(post, content, subs, dry_run=False):
+    """수신자 루프 진입 전 SMTP 연결을 1회만 열고(#2026-08-02-SA-MAIL §1)
+    루프 안에서는 send_message()만 호출한다. 연결이 끊기면(SMTPServerDisconnected·
+    SMTPSenderRefused) 그 수신자에 한해 재연결 1회 후 재시도 — 재시도도 실패하면
+    fail로 세고 다음 수신자로 계속 진행한다(한 명 실패가 전체를 막지 않는 기존
+    동작 유지). --dry는 연결을 아예 열지 않는다(회귀 없음)."""
     if not GMAIL_PASS and not dry_run:
         print("[!] GMAIL_APP_PASSWORD 환경변수를 설정해 주세요.")
         print("    export GMAIL_APP_PASSWORD='xxxx xxxx xxxx xxxx'")
@@ -223,38 +234,66 @@ def send(post, content, subs, dry_run=False):
     subject = f"[철강 주재원] {title}"
     ok = fail = 0
 
-    for sub in subs:
-        email = sub["email"]
-        name  = sub.get("name","")
-        html  = build_html(post, content, name, email)
-        plain = f"{title}\n{SITE_URL}/{post.get('url','')}\n\n구독 해지: csband8@gmail.com"
-
-        # \xa0 등 비ASCII 공백 전체 제거
-        html  = html.replace('\xa0', ' ')
-        plain = plain.replace('\xa0', ' ')
-
-        msg = EmailMessage(policy=email_policy.SMTP)
-        msg["Subject"] = subject
-        msg["From"]    = f"Steel Attache <{GMAIL_USER}>"
-        msg["To"]      = email
-        msg.set_content(plain, charset="utf-8")
-        msg.add_alternative(html, subtype="html", charset="utf-8")
-
-        if dry_run:
-            print(f"[DRY] → {email}")
-            ok += 1
-            continue
+    smtp = None
+    if not dry_run:
         try:
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
-                s.login(GMAIL_USER, GMAIL_PASS)
-                s.send_message(msg)
-            print(f"[OK]  → {email}")
-            ok += 1
+            smtp = _connect()
         except Exception as e:
-            import traceback
-            traceback.print_exc()
-            print(f"[FAIL] {email}: {e}")
-            fail += 1
+            print(f"[!] SMTP 연결/로그인 실패: {e}")
+            for sub in subs:
+                print(f"[FAIL] {sub.get('email','?')}: SMTP 연결 실패")
+            print(f"\n완료: 성공 0 / 실패 {len(subs)} / 전체 {len(subs)}")
+            return
+
+    try:
+        for sub in subs:
+            email = sub["email"]
+            name  = sub.get("name","")
+            html  = build_html(post, content, name, email)
+            plain = f"{title}\n{SITE_URL}/{post.get('url','')}\n\n구독 해지: csband8@gmail.com"
+
+            # \xa0 등 비ASCII 공백 전체 제거
+            html  = html.replace('\xa0', ' ')
+            plain = plain.replace('\xa0', ' ')
+
+            msg = EmailMessage(policy=email_policy.SMTP)
+            msg["Subject"] = subject
+            msg["From"]    = f"Steel Attache <{GMAIL_USER}>"
+            msg["To"]      = email
+            msg.set_content(plain, charset="utf-8")
+            msg.add_alternative(html, subtype="html", charset="utf-8")
+
+            if dry_run:
+                print(f"[DRY] → {email}")
+                ok += 1
+                continue
+
+            try:
+                smtp.send_message(msg)
+                print(f"[OK]  → {email}")
+                ok += 1
+            except (smtplib.SMTPServerDisconnected, smtplib.SMTPSenderRefused) as e:
+                try:
+                    try:
+                        smtp.quit()
+                    except Exception:
+                        pass
+                    smtp = _connect()
+                    smtp.send_message(msg)
+                    print(f"[OK]  → {email} (재연결 후 성공)")
+                    ok += 1
+                except Exception as e2:
+                    print(f"[FAIL] {email}: {e2}")
+                    fail += 1
+            except Exception as e:
+                print(f"[FAIL] {email}: {e}")
+                fail += 1
+    finally:
+        if smtp is not None:
+            try:
+                smtp.quit()
+            except Exception:
+                pass
 
     print(f"\n완료: 성공 {ok} / 실패 {fail} / 전체 {ok+fail}")
 
